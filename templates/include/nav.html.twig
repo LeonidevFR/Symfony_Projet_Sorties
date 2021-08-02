@@ -1,8 +1,17 @@
 <div>
     <h1>Logo Sortir.com</h1>
     <nav>
-        <a href="#">Accueil</a>
-        <a href="#">Se connecter</a>
-        {# Si l'user est connecté, enlever le lien se connecter et afficher les liens : mon profil et se déconnecter #}
+        <a href="{{ path('main_home') }}" title="Accueil">Accueil</a>
+        {% if app.user %}
+            <a href="{{ path('app_logout') }}" title="Se déconnecter">Se déconnecter</a>
+            <a href="">Mon profil</a>
+            {% if is_granted("ROLE_ADMIN") %}
+                <a href="" title="Panneau Admin">Panneau admin</a>
+            {% endif %}
+        {% else %}
+            <a href="{{ path('app_login') }}" title="Se connecter">Se connecter</a>
+            <a href="{{ path('app_register') }}" title="S'inscrire">S'inscrire</a>
+            {# Si l'user est connecté, enlever le lien se connecter et afficher les liens : mon profil et se déconnecter #}
+        {% endif %}
     </nav>
 </div>
