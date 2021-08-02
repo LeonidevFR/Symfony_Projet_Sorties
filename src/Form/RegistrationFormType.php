@@ -18,7 +18,11 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('pseudo')
             ->add('email')
+            ->add('firstName')
+            ->add('lastName')
+            ->add('phoneNumber')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -47,7 +51,7 @@ class RegistrationFormType extends AbstractType
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
-                    ])
+                    ]),
                 ],
             ])
         ;
