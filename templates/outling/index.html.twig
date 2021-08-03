@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OutlingController!{% endblock %}
+{% block title %}{{ parent() }}{% endblock %}
 
 {% block body %}
     <form>
         <div class="form-group">
-            <input type="text" name="zipcode" id="zipcode" placeholder="Code postal">
-            <select name="city" id="city"></select>
+            <input list="ville-select" id="ville-input" type="text" name="ville">
+            <datalist id="ville-select">
+            </datalist>
         </div>
-        <button type="submit">Envoyer</button>
     </form>
 {% endblock %}
 {% block endPageScript %}

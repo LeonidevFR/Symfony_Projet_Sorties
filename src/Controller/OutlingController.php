@@ -16,12 +16,6 @@ class OutlingController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $cityCodePostal = $request->query->get('codesPostaux');
-        $cityName = $request->query->get('nom');
-        $city = new City();
-        $city->setName($cityName);
-        $city->setCodePostal($cityCodePostal[0]);
-
         return $this->render('outling/index.html.twig', [
             'controller_name' => 'OutlingController',
         ]);
