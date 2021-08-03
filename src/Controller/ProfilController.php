@@ -15,7 +15,7 @@ class ProfilController extends AbstractController
     /**
      * @Route("/{string}", name="view")
      */
-    public function myprofile($string, UserRepository $userRepository): Response
+    public function profil($string, UserRepository $userRepository): Response
     {
         $user = $userRepository->findOneBy(
             ['pseudo' => $string]
@@ -23,19 +23,7 @@ class ProfilController extends AbstractController
 
         return $this->render('profil/profile.html.twig', [
             'user' => $user,
-        ]);
-    }
-
-    /**
-     * @Route("/user/{id}", name="user")
-     */
-    public function userProfile($string, UserRepository $userRepository): Response
-    {
-        $user = $userRepository->findOneBy(
-            ['pseudo' => $string]
-        );
-        return $this->render('profil/user.html.twig', [
-            'user' => $user,
+            'id' =>$user->getId()
         ]);
     }
 }

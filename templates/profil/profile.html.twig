@@ -18,5 +18,8 @@
             <p>Campus : {{ app.user.campus }}</p>
         </div>
     </div>
+    {% if app.user.id == id %}
+        <button class="btn"><a href="#">Modifier</a></button>
+    {% endif %}
     <button class="btn"><a href="{{ path('app_main_home') }}">Retour</a></button>
 {% endblock %}
