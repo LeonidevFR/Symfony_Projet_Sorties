@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>ENI Sorties {% block title %}{% endblock %}</title>
-        <link rel="stylesheet" href="{% block stylesheets %}{% endblock %}">
+        <link rel="stylesheet" href="{% block stylesheets %}{{ asset('css/style.css') }}{% endblock %}">
         <script>{% block javascripts %}{% endblock %}</script>
     </head>
     <body>
