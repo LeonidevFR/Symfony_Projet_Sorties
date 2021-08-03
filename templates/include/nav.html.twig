@@ -1,7 +1,8 @@
-<div>
-    <h1>Logo Sortir.com</h1>
+<div class="flex">
+    <img src="{{ asset('img/favicon-96x96.png') }}" alt="Logo Sortir.com">
+    <h1 class="site-name">Sortir.com</h1>
     <nav>
-        <a href="{{ path('main_home') }}" title="Accueil">Accueil</a>
+        <a href="{{ path('app_main_home') }}" title="Accueil">Accueil</a>
         {% if app.user %}
             <a href="{{ path('app_logout') }}" title="Se déconnecter">Se déconnecter</a>
             <a href="">Mon profil</a>
