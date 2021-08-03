@@ -41,6 +41,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=50)
+
      */
     private $pseudo;
 
@@ -55,7 +56,10 @@ class User implements UserInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Regex(
+     *     pattern="/[0-9]{10}/"
+     * )
      */
     private $phoneNumber;
 
@@ -241,40 +245,38 @@ class User implements UserInterface
 
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        $metadata->addPropertyConstraint('pseudo', new Assert\Regex([
-            'pattern' => '`^([a-zA-Z0-9-_]{4,16})$`',
+       $metadata->addPropertyConstraint('pseudo', new Assert\Regex([
+            'pattern' => '/^[a-zA-Z0-9]$/i',
             'match' => false,
-            'message' => 'le p',
+            'message' => 'WTF',
         ]));
 
         $metadata->addPropertyConstraint('password', new Assert\Regex([
-            'pattern' => '^(?=\P{Ll}*\p{Ll})(?=\P{Lu}*\p{Lu})(?=\P{N}*\p{N})(?=[\p{L}\p{N}]*[^\p{L}\p{N}])[\s\S]{8,}$',
+            'pattern' => '/^(?=.*[0-9])(?=.*[A-Z]).{8,20}$/i',
             'match' => false,
-            'message' => 'Votre mot de passe doit contenir : 1 Majuscule, 1 Minuscule, 1 Chiffre et 1 Caractère spécial.',
+            'message' => 'Votre mot de passe doit contenir : 1 Majuscule, 1 Minuscule, 1 Chiffre.',
         ]));
 
-        $metadata->addPropertyConstraint('email', new Assert\Regex([
-            'pattern' => '/^([-!#-\'*+\/-9=?A-Z^-~]{1,64}(\.[-!#-\'*+\/-9=?A-Z^-~]{1,64})*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?(\.[0-9A-Za-z]([0-9A-Za-z-]{0,61}[0-9A-Za-z])?)+$/',
-            'match' => false,
-            'message' => 'Votre nom ne peut pas contenir de chiffres.',
+        $metadata->addPropertyConstraint('email', new Assert\Email([
+            'message' => 'The email "{{ value }}" is not a valid email.',
         ]));
 
         $metadata->addPropertyConstraint('firstName', new Assert\Regex([
-            'pattern' => '/\d/',
+            'pattern' => '/\d/i',
             'match' => false,
             'message' => 'Your name cannot contain a number.',
         ]));
 
         $metadata->addPropertyConstraint('lastName', new Assert\Regex([
-            'pattern' => '/\d/',
+            'pattern' => '/\d/i',
             'match' => false,
             'message' => 'Your name cannot contain a number.',
         ]));
 
-        $metadata->addPropertyConstraint('phoneNumber', new Assert\Regex([
-            'pattern' => '^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$',
+        /**  $metadata->addPropertyConstraint('phoneNumber', new Assert\Regex([
+            'pattern' => '/^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$/i',
             'match' => false,
             'message' => 'Please provide a valid phone number.',
-        ]));
+        ])); */
     }
 }
