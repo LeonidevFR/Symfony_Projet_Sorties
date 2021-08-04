@@ -40,7 +40,7 @@ class ProfilController extends AbstractController
         // $encoder->encodePassword($user, $new_password)
         if($form->isSubmitted()
             && $form->isValid()
-            && $encoder->isPasswordValid($user, $form->get('oldPassword')->getData())
+            // $encoder->isPasswordValid($user, $form->get('oldPassword')->getData())
         ) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);

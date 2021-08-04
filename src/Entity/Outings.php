@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\OutingsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity(repositoryClass=OutingsRepository::class)
@@ -19,31 +21,37 @@ class Outings
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $nameOuting;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
      */
     private $dateHourOuting;
 
     /**
      * @ORM\Column(type="date")
+     * @Assert\NotBlank()
      */
     private $dateInscriptionLimit;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $spotNumber;
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
      */
     private $duration;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -60,6 +68,7 @@ class Outings
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $place;
 
@@ -210,6 +219,5 @@ class Outings
 
         return $this;
     }
-
 
 }
