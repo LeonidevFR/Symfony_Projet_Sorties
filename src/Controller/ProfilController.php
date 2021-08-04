@@ -35,20 +35,16 @@ class ProfilController extends AbstractController
     public function edit(Request $request, User $user) {
         $form = $this->createForm(EditFormType::class, $user);
         $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            if($form->get('plainPassword')->isEmpty())
-            {
-                $user->setPassword($user->getPassword());
-            }
-            if($form->get('currentPassword') == $user->getPassword()) {
+        // $encoder->isPasswordValid($user, $old_password)
+        // $encoder->encodePassword($user, $new_password)
+        if($form->isSubmitted()
+            && $form->isValid()
+            && $encoder->isPasswordValid($user, $form->get('oldPassword')->getData())
+        ) {
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
                 $entityManager->flush();
-                return $this->redirectToRoute('app_profil_view', ['string' => $user->getPseudo()]);
-            } else {
                 return $this->redirectToRoute('app_main_home');
-            }
         }
 
         return $this->render('profil/profile_edit.html.twig', array('form' => $form->createView()));
