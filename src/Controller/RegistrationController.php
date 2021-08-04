@@ -23,6 +23,9 @@ class RegistrationController extends AbstractController
                              AppAuthenticator $authenticator,
                              User $user): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_main_home');
+        }
         $user->setRoles(['ROLE_USER']);
         $user->setActive(true);
         $form = $this->createForm(RegistrationFormType::class, $user);
