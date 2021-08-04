@@ -12,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Campus
 {
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

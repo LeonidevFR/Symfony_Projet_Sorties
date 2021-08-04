@@ -15,11 +15,14 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/register", name="app_register")
+     * @Route("/register", "app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, AppAuthenticator $authenticator): Response
+    public function register(Request $request,
+                             UserPasswordEncoderInterface $passwordEncoder,
+                             GuardAuthenticatorHandler $guardHandler,
+                             AppAuthenticator $authenticator,
+                             User $user): Response
     {
-        $user = new User();
         $user->setRoles(['ROLE_USER']);
         $user->setActive(true);
         $form = $this->createForm(RegistrationFormType::class, $user);

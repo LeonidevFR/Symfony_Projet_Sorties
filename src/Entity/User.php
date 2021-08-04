@@ -36,7 +36,6 @@ class User implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-
     private $password;
 
     /**
@@ -57,9 +56,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", nullable=true)
-     * @Assert\Regex(
-     *     pattern="/[0-9]{10}/"
-     * )
      */
     private $phoneNumber;
 
@@ -138,6 +134,7 @@ class User implements UserInterface
 
         return $this;
     }
+
 
     /**
      * Returning a salt is only needed, if you are not using a modern
