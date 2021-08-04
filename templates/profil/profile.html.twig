@@ -3,11 +3,7 @@
 {% block body %}
     <div class="container">
         <div>
-            {% if app.user.avatar %}
-                {{ app.user.avatar }}
-            {% else %}
-                <img src="{{ asset('img/imagedemerde.png') }}" alt="Photo de profil">
-            {% endif %}
+            <img src="{{ asset('img/userAvatar/' ~ app.user.avatar) }}" alt="Photo">
         </div>
         <div class="margin-left">
             <h2>{{ app.user.pseudo }}</h2>

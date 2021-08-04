@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,6 +19,12 @@ class EditFormType extends AbstractType
         $builder
             ->add('pseudo')
             ->add('phoneNumber')
+            ->add('avatar', FileType::class, [
+                'label' => 'Choisissez une image',
+                'required' => false,
+                'mapped' => false,
+
+            ])
             ->add('plainPassword', RepeatedType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller

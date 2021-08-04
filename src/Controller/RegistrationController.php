@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\AppAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,13 +21,18 @@ class RegistrationController extends AbstractController
     public function register(Request $request,
                              UserPasswordEncoderInterface $passwordEncoder,
                              GuardAuthenticatorHandler $guardHandler,
-                             AppAuthenticator $authenticator,
-                             User $user): Response
+                             AppAuthenticator $authenticator)  : Response
     {
+        $user = new User();
         if ($this->getUser()) {
             return $this->redirectToRoute('app_main_home');
         }
         $user->setRoles(['ROLE_USER']);
+        $finder = new Finder();
+        $finder->files()->name('imagedemerde.png')->in( '../public/img/userAvatar');
+        foreach ($finder as $file){
+            $user->setAvatar($file->getFilename());
+        }
         $user->setActive(true);
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
