@@ -1,34 +1,64 @@
 window.onload = () => {
     const apiUrl = 'https://geo.api.gouv.fr/communes';
     const Http = new XMLHttpRequest;
+    let data;
     document.getElementById('ville-input').addEventListener('keyup', () => {
-        let villeSelect = document.getElementById('ville-select');
+        const villeSelect = document.getElementById('ville-select');
+        const codePostalSelect = document.getElementById('codePostal-select')
         const villeInput = document.getElementById('ville-input').value
-        while(villeSelect.firstChild){
-            villeSelect.removeChild(villeSelect.lastChild)
+        while(villeSelect.firstChild) {
+            villeSelect.removeChild(villeSelect.lastChild);
         }
+        while(codePostalSelect.firstChild) {
+            codePostalSelect.removeChild(codePostalSelect.lastChild);
+        }
+        codePostalSelect.setAttribute('disabled', 'true');
         let url = '';
-        if(villeInput.length >= 3){
-            url = 'https://geo.api.gouv.fr/communes/?nom=' + villeInput + '&fields=nom';
+        if(villeInput.length >= 3) {
+            let i = 0;
+            url = 'https://geo.api.gouv.fr/communes/?nom=' + villeInput + '&fields=codesPostaux';
             Http.open("GET", url);
             Http.responseType = 'json';
             Http.send();
-            let i = 0;
             Http.onreadystatechange = () => {
-                const data = Http.response;
+                data = Http.response;
                 for (const key in data) {
+                    let existe = false;
                     const nomVille = data[key]['nom'];
-                    if(document.getElementById(nomVille) == null){
-                        const option = document.createElement('option');
-                        option.setAttribute('id', nomVille);
-                        option.value = nomVille;
-                        villeSelect.appendChild(option);
-                        i++;
+                    const children = villeSelect.childNodes;
+                    for(let i = 0; i < children.length; i++){
+                        if(children[i].textContent === nomVille)
+                            existe = true;
                     }
+                    if(existe === false)
+                        optionCreation(nomVille, villeSelect);
+                    const codesPostaux = data[key]['codesPostaux'];
+                    (() => {
+                        if(villeInput === nomVille) {
+                            for (let i = 0; i < codesPostaux.length; i++) {
+                                codePostalSelect.removeAttribute('disabled', 'false');
+                                const codePostal = data[key]['codesPostaux'][i]
+                                optionCreation(codePostal, codePostalSelect)
+                            }
+                        }
+                    })();
+                    i++;
                     if (i >= 10)
                         break;
                 }
             }
         }
-    })
+    });
+
+    document.getElementById('ville-input').addEventListener('change', () => {
+        document.getElementById('ville-input').blur()
+    });
+    function optionCreation(value, parent) {
+        let option = document.createElement('option');
+        option.setAttribute('id', value);
+        option.setAttribute('title', value);
+        option.value = value;
+        option.innerHTML = value;
+        parent.appendChild(option);
+    }
 }

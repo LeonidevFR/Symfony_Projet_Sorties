@@ -270,10 +270,10 @@ class User implements UserInterface
             'message' => 'Your name cannot contain a number.',
         ]));
 
-        /**  $metadata->addPropertyConstraint('phoneNumber', new Assert\Regex([
-            'pattern' => '/^(?:(?:\+|00)33[\s.-]{0,3}(?:\(0\)[\s.-]{0,3})?|0)[1-9](?:(?:[\s.-]?\d{2}){4}|\d{2}(?:[\s.-]?\d{3}){2})$/i',
+        $metadata->addPropertyConstraint('phoneNumber', new Assert\Regex([
+            'pattern' => '/^1?(\d{10})/i',
             'match' => false,
             'message' => 'Please provide a valid phone number.',
-        ])); */
+        ]));
     }
 }
