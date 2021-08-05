@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -29,6 +31,9 @@ class EditFormType extends AbstractType
                     'maxSize' => '5M',
                     'mimeTypesMessage' => 'Le fichier insérer n\'est pas une image valide',
                 ])]
+            ])
+            ->add('campus', EntityType::class, [
+                'class' =>Campus::class, 'choice_label'=> 'name'
             ])
             ->add('plainPassword', RepeatedType::class, [
                 // instead of being set onto the object directly,

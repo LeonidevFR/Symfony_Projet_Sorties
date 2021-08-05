@@ -3,7 +3,7 @@
 {% block body %}
     <div class="container">
         <div>
-            <img src="{{ asset('img/userAvatar/' ~ app.user.avatar) }}" alt="Photo">
+            <img style="max-width: 450px; max-height: 900px;" src="{{ asset('img/userAvatar/' ~ user.avatar) }}" alt="Photo">
         </div>
         <div class="margin-left">
             <h2>{{ app.user.pseudo }}</h2>
@@ -14,8 +14,10 @@
             <p>Campus : {{ app.user.campus }}</p>
         </div>
     </div>
-    {% if app.user.id %}
-        <button class="btn"><a href="{{ path('app_profil_app_profil_edit', {'id': app.user.id}) }}">Modifier</a></button>
-    {% endif %}
-    <button class="btn"><a href="{{ path('app_main_home') }}">Retour</a></button>
+    <div class="center-btn">
+        {% if app.user.id == user.id %}
+            <button class="btn"><a href="{{ path('app_profil_edit') }}">Modifier</a></button>
+        {% endif %}
+        <button class="btn"><a href="{{ path('app_main_home') }}">Retour</a></button>
+    </div>
 {% endblock %}

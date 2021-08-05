@@ -1,1 +1,10 @@
 {% extends 'outling/index.html.twig' %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+        <div class="flash-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    HOME
+{% endblock %}

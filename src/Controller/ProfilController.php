@@ -33,7 +33,7 @@ class ProfilController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", "edit")
+     * @Route("edit", name="edit")
      */
     public function edit(UserPasswordEncoderInterface $encoder, Request $request, User $user) {
         $form = $this->createForm(EditFormType::class, $user);
@@ -42,32 +42,33 @@ class ProfilController extends AbstractController
         // $encoder->encodePassword($user, $new_password)
         if($form->isSubmitted()
             && $form->isValid()
-            // $encoder->isPasswordValid($user, $form->get('oldPassword')->getData())
+            && $encoder->isPasswordValid($user, $form->get('oldPassword')->getData())
         ) {
             $image=$form->get('avatar')->getData();
-                // je test si l'image a été changée, si non: une nouvelle est saisie
-                if(!is_null($image)) {
-                    // donner un nouveau nom unique à l'image
-                    $new_image_name = uniqid() . '.' . $image->guessExtension();
-                    // enregistrer l'image sur le serveur
-                    $image->move($this->getParameter('upload_dir'), $new_image_name);
-                    // je donne le nom de l'image dans la DBB
-                    $userOldAvatar = $user->getAvatar();
-                    $user->setAvatar($new_image_name);
-                    $path = '../public/img/userAvatar';
-                    $finder = new Finder();
-                    $finder->files()->name($userOldAvatar)->in($path);
-                    foreach ($finder as $file){
-                        if($file != null && ($file->getFilename() != "imagedemerde.png")){
+            // je test si l'image a été changée, si non: une nouvelle est saisie
+            if(!is_null($image)) {
+                // donner un nouveau nom unique à l'image
+                $new_image_name = uniqid() . '.' . $image->guessExtension();
+                // enregistrer l'image sur le serveur
+                $image->move($this->getParameter('upload_dir'), $new_image_name);
+                // je donne le nom de l'image dans la DBB
+                $userOldAvatar = $user->getAvatar();
+                $user->setAvatar($new_image_name);
+                $path = '../public/img/userAvatar';
+                $finder = new Finder();
+                $finder->files()->name($userOldAvatar)->in($path);
+                foreach ($finder as $file){
+                    if($file != null && ($file->getFilename() != "imagedemerde.png")){
 
-                            unlink($path . "/" . ($userOldAvatar));
-                        }
+                        unlink($path . "/" . ($userOldAvatar));
                     }
                 }
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($user);
-                $entityManager->flush();
-                return $this->redirectToRoute('app_main_home');
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+            $this->addFlash('success', "Modifications bien enregistrées");
+            return $this->redirectToRoute('app_main_home');
         }
 
         return $this->render('profil/profile_edit.html.twig', array('form' => $form->createView()));
