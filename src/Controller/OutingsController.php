@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Outings;
 use App\Form\OutingsFormType;
+use App\Repository\CityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,17 +24,26 @@ class OutingsController extends AbstractController
 
         $outingForm->handleRequest($request);
 
-            if($outingForm->isSubmitted() && $outingForm->isValid()){
-                dd($outing);
+            if($outingForm->isSubmitted()){
                 $city = new City();
-                dd($outingForm->getData());
-                $city->setName($outingForm->get('city')->getData());
-                $outing->setCity($city);
-                dump($outing);
-                $em = $this->getDoctrine()->getManager();
+                $city->setName($request->get('ville'))
+                    ->setCodePostal($request->get('codePostal'));
+                $em = $this->getDoctrine()
+                    ->getManager();
+                $query = $this->getDoctrine()
+                    ->getRepository(City::class)
+                    ->findOneBy(
+                        ['codePostal' => $city->getCodePostal()]
+                    );
+                if(!$query){
+                    $em->persist($city);
+                    $outing->setCity($city);
+                }
+                else
+                    $outing->setCity($query);
                 $em->persist($outing);
                 $em->flush();
-                return new Response('Sortie bien enregistré.');
+            return new Response('Sortie bien enregistré.');
         }
 
         return $this->render('outings/outings.html.twig', [

@@ -25,7 +25,7 @@ class City
     private $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     private $codePostal;
 
@@ -62,12 +62,12 @@ class City
         return $this;
     }
 
-    public function getCodePostal(): ?int
+    public function getCodePostal(): ?string
     {
         return $this->codePostal;
     }
 
-    public function setCodePostal(int $codePostal): self
+    public function setCodePostal(string $codePostal): self
     {
         $this->codePostal = $codePostal;
 
