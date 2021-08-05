@@ -242,15 +242,16 @@ class User implements UserInterface
 
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-       $metadata->addPropertyConstraint('pseudo', new Assert\Regex([
-            'pattern' => '/^[a-zA-Z0-9]$/i',
-            'match' => false,
-            'message' => 'WTF',
+       $metadata->addPropertyConstraint('pseudo', new Assert\Length([
+            'min' => 3,
+            'max' => 20,
+            'minMessage' => 'Yolo',
+            'maxMessage' => 'It works',
         ]));
 
         $metadata->addPropertyConstraint('password', new Assert\Regex([
             'pattern' => '/^(?=.*[0-9])(?=.*[A-Z]).{8,20}$/i',
-            'match' => false,
+            'match' => true,
             'message' => 'Votre mot de passe doit contenir : 1 Majuscule, 1 Minuscule, 1 Chiffre.',
         ]));
 
@@ -273,7 +274,16 @@ class User implements UserInterface
         $metadata->addPropertyConstraint('phoneNumber', new Assert\Regex([
             'pattern' => '/^1?(\d{10})/i',
             'match' => false,
-            'message' => 'Please provide a valid phone number.',
+            'message' => 'Le format de votre numéro n\'est pas valide.',
+        ]));
+        $metadata->addPropertyConstraint('phoneNumber', new Assert\Length([
+            'max' => 10,
+            'maxMessage' => 'Your Phone Number must contain 10 Caracters',
+        ]));
+
+        $metadata->addConstraint(new UniqueEntity([
+            'fields' => 'pseudo',
+            'message' => 'Ce pseudo est déjà utilisé.'
         ]));
     }
 }
