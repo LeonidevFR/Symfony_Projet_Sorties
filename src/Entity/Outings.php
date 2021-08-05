@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OutingsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
@@ -40,6 +41,7 @@ class Outings
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank()
+     *
      */
     private $spotNumber;
 
@@ -62,26 +64,10 @@ class Outings
     private $campus;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity=city::class, inversedBy="outings")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $city;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\NotBlank()
-     */
-    private $place;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $latitude;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $longitude;
-
 
     public function getId(): ?int
     {
@@ -172,52 +158,29 @@ class Outings
         return $this;
     }
 
-    public function getCity(): ?string
+
+    public function getCity(): ?city
     {
         return $this->city;
     }
 
-    public function setCity(string $city): self
+    public function setCity(?city $city): self
     {
         $this->city = $city;
 
         return $this;
     }
 
-    public function getPlace(): ?string
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-        return $this->place;
+        $metadata->addPropertyConstraint('nameOuting', new Assert\Length([
+            'min' => 6,
+            'minMessage' => 'Le nom de la sortie doit faire minimum 6 caractères',
+        ]));
+
+        $metadata->addConstraint(new UniqueEntity([
+            'fields' => 'nameOuting',
+            'message' => 'Le nom de cette sortie est déjà utilisé.'
+        ]));
     }
-
-    public function setPlace(?string $place): self
-    {
-        $this->place = $place;
-
-        return $this;
-    }
-
-    public function getLatitude(): ?string
-    {
-        return $this->latitude;
-    }
-
-    public function setLatitude(?string $latitude): self
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    public function getLongitude(): ?string
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(?string $longitude): self
-    {
-        $this->longitude = $longitude;
-
-        return $this;
-    }
-
 }

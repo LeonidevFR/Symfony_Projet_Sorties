@@ -7,6 +7,7 @@ use App\Entity\Outings;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -43,20 +44,7 @@ class OutingsFormType extends AbstractType
             ])
             ->add('Campus', EntityType::class,[
                 'class' =>Campus::class, 'choice_label'=> 'name'
-            ])
-            ->add('city', TextType::class, [
-                'label' => 'Ville : ',
-            ])
-            ->add('place', TextType::class, [
-                'label' => 'Lieu : ',
-            ])
-            ->add('latitude', TextType::class, [
-                'label' => 'Latitude : ',
-            ])
-            ->add('longitude', TextType::class, [
-                'label' => 'Longitude : ',
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

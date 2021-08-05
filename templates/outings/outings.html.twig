@@ -18,15 +18,21 @@
         {{ form_row(outingForm.duration) }}
         {{ form_row(outingForm.description) }}
         {{ form_row(outingForm.Campus) }}
-        {{ form_row(outingForm.city) }}
-        {{ form_row(outingForm.place) }}
-        {{ form_row(outingForm.latitude) }}
-        {{ form_row(outingForm.longitude) }}
+            <div class="form-group">
+                <label for="ville-input">Ville : </label>
+                <input list="ville-select" id="ville-input" type="text" name="ville">
+                <datalist id="ville-select">
+                </datalist>
+            </div>
 
-        <button type="submit" class="btn">Envoyer</button>
-        {{ form_end(outingForm) }}
-    </div>
+            <div>
+                <label for="codePostal-select">Code Postal : </label>
+                <select style="width:200px;" id="codePostal-select">
+                </select>
+            </div>
+            <button>Submit</button>
+{% endblock %}
 
-
-</div>
+{% block endPageScript %}
+    <script src="{{ asset('script/app.js') }}"></script>
 {% endblock %}
