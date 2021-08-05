@@ -14,12 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
- * @Route("/profil", name="app_profil_")
+ * @Route("/profil/", name="app_profil_")
  */
 class ProfilController extends AbstractController
 {
     /**
-     * @Route("/{string}", name="view")
+     * @Route("view/{string}", name="view")
      */
     public function profil($string, UserRepository $userRepository): Response
     {
@@ -35,7 +35,8 @@ class ProfilController extends AbstractController
     /**
      * @Route("edit", name="edit")
      */
-    public function edit(UserPasswordEncoderInterface $encoder, Request $request, User $user) {
+    public function edit(UserPasswordEncoderInterface $encoder, Request $request) {
+        $user = $this->getUser();
         $form = $this->createForm(EditFormType::class, $user);
         $form->handleRequest($request);
         // $encoder->isPasswordValid($user, $old_password)
