@@ -1,18 +1,18 @@
 window.onload = () => {
     const apiUrl = 'https://geo.api.gouv.fr/communes';
     const Http = new XMLHttpRequest;
-    let data;
+    var data;
     document.getElementById('ville-input').addEventListener('keyup', () => {
         const villeSelect = document.getElementById('ville-select');
         const codePostalSelect = document.getElementById('codePostal-select')
         const villeInput = document.getElementById('ville-input').value
         while(villeSelect.firstChild) {
             villeSelect.removeChild(villeSelect.lastChild);
-        }
+        };
         while(codePostalSelect.firstChild) {
             codePostalSelect.removeChild(codePostalSelect.lastChild);
-        }
-        codePostalSelect.setAttribute('disabled', 'true');
+        };
+        codePostalSelect.setAttribute('disabled', true);
         let url = '';
         if(villeInput.length >= 3) {
             let i = 0;
@@ -27,16 +27,16 @@ window.onload = () => {
                     const nomVille = data[key]['nom'];
                     const children = villeSelect.childNodes;
                     for(let i = 0; i < children.length; i++){
-                        if(children[i].textContent === nomVille)
+                        if(children[i].textContent == nomVille)
                             existe = true;
                     }
-                    if(existe === false)
-                        optionCreation(nomVille, villeSelect);
+                    if(existe == false)
+                        option = optionCreation(nomVille, villeSelect);
                     const codesPostaux = data[key]['codesPostaux'];
                     (() => {
-                        if(villeInput === nomVille) {
+                        if(villeInput == nomVille) {
                             for (let i = 0; i < codesPostaux.length; i++) {
-                                codePostalSelect.removeAttribute('disabled', 'false');
+                                codePostalSelect.removeAttribute('disabled', false);
                                 const codePostal = data[key]['codesPostaux'][i]
                                 optionCreation(codePostal, codePostalSelect)
                             }
@@ -54,11 +54,12 @@ window.onload = () => {
         document.getElementById('ville-input').blur()
     });
     function optionCreation(value, parent) {
-        let option = document.createElement('option');
+        var option = document.createElement('option');
         option.setAttribute('id', value);
         option.setAttribute('title', value);
         option.value = value;
         option.innerHTML = value;
         parent.appendChild(option);
-    }
+        return option;
+    };
 }
