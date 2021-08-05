@@ -7,6 +7,7 @@ use App\Form\EditFormType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,8 +55,13 @@ class ProfilController extends AbstractController
                     $userOldAvatar = $user->getAvatar();
                     $user->setAvatar($new_image_name);
                     $path = '../public/img/userAvatar';
-                    if($userOldAvatar != null || $userOldAvatar != "imagedemerde.png") {
-                        unlink($path . "/" . ($userOldAvatar));
+                    $finder = new Finder();
+                    $finder->files()->name($userOldAvatar)->in($path);
+                    foreach ($finder as $file){
+                        if($file != null && ($file->getFilename() != "imagedemerde.png")){
+
+                            unlink($path . "/" . ($userOldAvatar));
+                        }
                     }
                 }
                 $entityManager = $this->getDoctrine()->getManager();
