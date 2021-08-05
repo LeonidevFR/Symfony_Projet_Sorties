@@ -1,0 +1,8 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+{% block content %}
+    <div style="margin: 10px;">
+        <h1>Administration</h1>
+        <p>Bienvenue {{ app.user.firstName }} dans le panneau d'administration du site</p>
+        <a href="{{ path('app_main_home') }}">Retournez à l'application</a>
+    </div>
+{% endblock %}
