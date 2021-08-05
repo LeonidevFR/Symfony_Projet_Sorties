@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Outings;
 use App\Form\OutingsFormType;
-use App\Repository\CityRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
