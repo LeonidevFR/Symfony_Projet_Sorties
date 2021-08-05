@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Image;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -23,7 +24,11 @@ class EditFormType extends AbstractType
                 'label' => 'Choisissez une image',
                 'required' => false,
                 'mapped' => false,
-
+                'constraints' => [new Image([
+                    'maxSizeMessage' => 'L\'image est trop volumineuse',
+                    'maxSize' => '5M',
+                    'mimeTypesMessage' => 'Le fichier insérer n\'est pas une image valide',
+                ])]
             ])
             ->add('plainPassword', RepeatedType::class, [
                 // instead of being set onto the object directly,

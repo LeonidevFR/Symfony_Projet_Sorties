@@ -53,9 +53,10 @@ class ProfilController extends AbstractController
                     // je donne le nom de l'image dans la DBB
                     $userOldAvatar = $user->getAvatar();
                     $user->setAvatar($new_image_name);
-                    $path = "../public/img/userAvatar";
-                    if($userOldAvatar!= null)
-                        unlink($path."/".($userOldAvatar));
+                    $path = '../public/img/userAvatar';
+                    if($userOldAvatar != null || $userOldAvatar != "imagedemerde.png") {
+                        unlink($path . "/" . ($userOldAvatar));
+                    }
                 }
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($user);
