@@ -12,8 +12,15 @@
     padding: 5px 10px;
 }
 
-.container btn {
-    text-align: center;
+.center-btn {
+    display: flex;
+    justify-content: center;
+}
+
+.center-btn button {
+    font-size: 1.2em;
+    width: auto;
+    margin: 0px 10px;
 }
 
 .flex a {
