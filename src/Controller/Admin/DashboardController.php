@@ -32,9 +32,17 @@ class DashboardController extends AbstractDashboardController
      */
     public function index(): Response
     {
+        $users = $this->userRepository->findAll();
+        $admin = 0;
+        foreach($users as $user) {
+            foreach ($user->getRoles() as $roles) {
+                if(str_contains($roles,'ROLE_ADMIN'))
+                    $admin++;
+            }
+        }
         return $this->render('admin/dashboard.html.twig', [
-            'countAllUsers' => $this->userRepository->countAllUsers(),
-            'countAllAdmins' => $this->userRepository->countAllAdmins()
+            'users' => $users,
+            'admins' => $admin
         ]);
     }
 

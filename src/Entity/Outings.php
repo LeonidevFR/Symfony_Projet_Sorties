@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OutingsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -68,6 +70,26 @@ class Outings
      * @ORM\JoinColumn(nullable=false)
      */
     private $city;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=status::class, inversedBy="outings")
+     */
+    private $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="createdOutings")
+     */
+    private $author;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=user::class, inversedBy="outings")
+     */
+    private $members;
+
+    public function __construct()
+    {
+        $this->members = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -182,5 +204,53 @@ class Outings
             'fields' => 'nameOuting',
             'message' => 'Le nom de cette sortie est déjà utilisé.'
         ]));
+    }
+
+    public function getStatus(): ?status
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?status $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|user[]
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(user $member): self
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+        }
+
+        return $this;
+    }
+
+    public function removeMember(user $member): self
+    {
+        $this->members->removeElement($member);
+
+        return $this;
     }
 }
