@@ -40,8 +40,9 @@ class OutingsCrudController extends AbstractCrudController
             DateField::new('dateInscriptionLimit', 'Date limite d\'inscription'),
             IntegerField::new('spotNumber','Places'),
             AssociationField::new('members','Participants')->hideOnIndex(),
-            IntegerField::new('duration','Durée'),
+            IntegerField::new('duration','Durée')->hideOnIndex(),
             AssociationField::new('city','Villes'),
+            AssociationField::new('status','Status'),
         ];
     }
 }

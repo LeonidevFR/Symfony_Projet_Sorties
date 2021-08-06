@@ -7,9 +7,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -50,7 +52,15 @@ class UserCrudController extends AbstractCrudController
             TextField::new('phoneNumber','N° de téléphone')->hideOnIndex(),
             TextField::new('avatar','Avatar')->onlyWhenUpdating(),
             AssociationField::new('campus','Campus'),
-            BooleanField::new('active','Actif')
+            ChoiceField::new('roles', 'Roles')
+                ->allowMultipleChoices()
+                ->setChoices(['Admin' => 'ROLE_ADMIN'])
+                ->onlyOnForms()
+                ->setRequired(false),
+            ChoiceField::new('roles', 'Roles')
+                ->setChoices(['Admin' => 'ROLE_ADMIN', 'Utilisateurs' => 'ROLE_USER'])
+                ->onlyOnIndex(),
+
         ];
     }
 }
