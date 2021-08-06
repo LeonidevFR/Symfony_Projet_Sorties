@@ -58,13 +58,13 @@ class Outings
     private $description;
 
     /**
-     * @ORM\ManyToOne(targetEntity=campus::class, inversedBy="outings")
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="outings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $campus;
 
     /**
-     * @ORM\ManyToOne(targetEntity=city::class, inversedBy="outings")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="outings")
      * @ORM\JoinColumn(nullable=false)
      */
     private $city;

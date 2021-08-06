@@ -7,6 +7,7 @@ use App\Entity\City;
 use App\Entity\Outings;
 use App\Entity\Status;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -18,12 +19,23 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class DashboardController extends AbstractDashboardController
 {
+    protected $userRepository;
+
+    public function __construct(
+        UserRepository $userRepository
+    ) {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * @Route("/admin", name="admin")
      */
     public function index(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
+        return $this->render('admin/dashboard.html.twig', [
+            'countAllUsers' => $this->userRepository->countAllUsers(),
+            'countAllAdmins' => $this->userRepository->countAllAdmins()
+        ]);
     }
 
     public function configureDashboard(): Dashboard

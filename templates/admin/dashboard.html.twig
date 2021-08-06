@@ -1,8 +1,16 @@
 {% extends '@EasyAdmin/layout.html.twig' %}
 {% block content %}
-    <div style="margin: 10px;">
-        <h1>Administration</h1>
-        <p>Bienvenue {{ app.user.firstName }} dans le panneau d'administration du site</p>
-        <a href="{{ path('app_main_home') }}">Retournez à l'application</a>
+    <div class="container">
+        <div class="row">
+            <div class="col-6 alert-info">
+                <span class="display-3">{{ countAllUsers['value'] }}</span> utilisateurs inscrits
+            </div>
+            <div class="col-6 alert-success">
+                <span class="display-3">{{ countAllAdmins['value'] }}</span> administrateurs
+            </div>
+        </div>
+        <div class="row" style="margin-top: 30px">
+            <div class="col text-center"> <a class="btn btn-primary center" href="{{ path('app_main_home') }}" role="button">Retournez à l'application</a></div>
+        </div>
     </div>
 {% endblock %}

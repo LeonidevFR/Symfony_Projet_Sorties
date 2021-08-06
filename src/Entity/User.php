@@ -249,12 +249,6 @@ class User implements UserInterface
             'maxMessage' => 'It works',
         ]));
 
-        $metadata->addPropertyConstraint('password', new Assert\Regex([
-            'pattern' => '/^(?=.*[0-9])(?=.*[A-Z]).{8,20}$/i',
-            'match' => true,
-            'message' => 'Votre mot de passe doit contenir : 1 Majuscule, 1 Minuscule, 1 Chiffre.',
-        ]));
-
         $metadata->addPropertyConstraint('email', new Assert\Email([
             'message' => 'The email "{{ value }}" is not a valid email.',
         ]));
@@ -271,11 +265,6 @@ class User implements UserInterface
             'message' => 'Your name cannot contain a number.',
         ]));
 
-        $metadata->addPropertyConstraint('phoneNumber', new Assert\Regex([
-            'pattern' => '/^1?(\d{10})/i',
-            'match' => false,
-            'message' => 'Le format de votre numéro n\'est pas valide.',
-        ]));
         $metadata->addPropertyConstraint('phoneNumber', new Assert\Length([
             'max' => 10,
             'maxMessage' => 'Your Phone Number must contain 10 Caracters',
