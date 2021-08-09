@@ -15,26 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class OutingController extends AbstractController
 {
-    /*
+    /**
      * @Route("/{id}", name="_view")
-     *  requirements={"id": "\d+"}
+     * requirements={"id": "\d+"}
      */
     public function outingView($id): Response
     {
-
         $view = $this->getDoctrine()->getRepository(Outings::class)->find($id);
 
         if(!$view){
             throw $this->createNotFoundException('Aucune sortie ne correspond a l\'ID'.$id);
         }
-
-
-        return $this->render('view.html.twig', [
+        return $this->render('outings/view.html.twig', [
             'controller_name' => 'OutingViewController',
             'view' => $view,
         ]);
     }
-/**
+
+    /**
      * @Route("/create", name="_create")
      */
     public function createOuting(Request $request): Response
