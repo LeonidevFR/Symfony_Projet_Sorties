@@ -11,12 +11,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/outing", name="app_outing_")
+ * @Route("/outing", name="app_outing")
  */
 class OutingController extends AbstractController
 {
     /*
-     * @Route("", name="view")
+     * @Route("", name="_view")
      */
     public function outingView($id): Response
     {
@@ -34,7 +34,7 @@ class OutingController extends AbstractController
         ]);
     }
 /**
-     * @Route("/create", name="create")
+     * @Route("/create", name="_create")
      */
     public function createOuting(Request $request): Response
     {
@@ -71,7 +71,7 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="edit")
+     * @Route("/edit/{id}", name="_edit")
      */
     public function edit(Request $request, Outings $outing)
     {
@@ -105,7 +105,7 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route("/subscription/{id}", name="subscription")
+     * @Route("/subscription/{id}", name="_subscription")
      *  requirements={"id": "\d+"}
      */
     public function subscription($id)
@@ -131,7 +131,7 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route("/unsubscribe/{id}", name="unsubscribe",
+     * @Route("/unsubscribe/{id}", name="_unsubscribe",
      *     requirements={"id": "\d+"})
      */
     public function unsuscribe(int $id)
