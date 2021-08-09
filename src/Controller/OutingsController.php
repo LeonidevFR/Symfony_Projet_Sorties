@@ -101,4 +101,55 @@ class OutingsController extends AbstractController
             'outingForm' => $outingForm->createView()
         ]);
     }
+
+    /**
+     * @Route("/outing/view/{id}/subscription", name="app_outingsSubscription")
+     *  requirements={"id": "\d+"}
+     */
+    public function subscription($id)
+    {
+        $SortieRepository = $this->getDoctrine()->getRepository(Outings::class);
+        $sortie = $SortieRepository->find($id);
+
+        // on inscrit l'utilisateur que si le côtat le permet
+        if(count($sortie->getMembers()) < $sortie->getSpotNumber())
+        {
+            $sortie->addMember($this->getUser());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($sortie);
+            $em->flush();
+        }
+        else
+        {
+            $this->addFlash('danger', "Dommage il semblerait qu'il n'y est plus de place pour cette sortie ! ");
+        }
+
+        return $this->redirectToRoute('app_main_home');
+    }
+
+    /**
+     * @Route("/outing/view/{id}/unsuscrib", name="app_outingsUnsuscrib",
+     *     requirements={"id": "\d+"})
+     */
+
+    public function unsuscrib(int $id)
+    {
+        $sortieRepository = $this->getDoctrine()->getRepository(Outings::class);
+        $sortie = $sortieRepository->find($id);
+
+        if (!$sortie) {
+            $this->addFlash('danger', "Cette sortie n'existe pas !");
+            return $this->redirectToRoute('app_main_home');
+        }
+
+        // supprime l'utilisateur de la liste des participants
+        $sortie->removeMember($this->getUser());
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('app_main_home');
+    }
+
 }
