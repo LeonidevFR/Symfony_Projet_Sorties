@@ -10,12 +10,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/outing", name="app_outing_")
+ */
 class OutingController extends AbstractController
 {
-    /**
-     * @Route("/outing", name="app_outing")
+    /*
+     * @Route("", name="view")
      */
+    public function outingView($id): Response
+    {
 
+        $view = $this->getDoctrine()->getRepository(Outings::class)->find($id);
+
+        if(!$view){
+            throw $this->createNotFoundException('Aucune sortie ne correspond a l\'ID'.$id);
+        }
+
+
+        return $this->render('view.html.twig', [
+            'controller_name' => 'OutingViewController',
+            'view' => $view,
+        ]);
+    }
+/**
+     * @Route("/create", name="create")
+     */
     public function createOuting(Request $request): Response
     {
         $outing = new Outings();
@@ -51,10 +71,9 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route("outing/edit/{id}", name="app_edit_outing_id")
+     * @Route("/edit/{id}", name="edit")
      */
-
-    public function edit(Request $request, outings $outings)
+    public function edit(Request $request, Outings $outing)
     {
 
         $outingForm = $this->createForm(OutingsFormType::class, $outing);
@@ -86,7 +105,7 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route("/outing/view/{id}/subscription", name="app_outings_subscription")
+     * @Route("/subscription/{id}", name="subscription")
      *  requirements={"id": "\d+"}
      */
     public function subscription($id)
@@ -112,10 +131,9 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route("/outing/view/unsuscribe/{id}", name="app_outings_unsuscribe",
+     * @Route("/unsubscribe/{id}", name="unsubscribe",
      *     requirements={"id": "\d+"})
      */
-
     public function unsuscribe(int $id)
     {
         $sortieRepository = $this->getDoctrine()->getRepository(Outings::class);

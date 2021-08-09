@@ -36,8 +36,9 @@
                         </a>
                     </td>
                     <td>
+                        <a href="{{ path('app_outing') }}"
                         {% if app.user.pseudo in outing.members %}
-                            <a href="{{ path('app_outings_unsuscribe') }}"></a>
+                            <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
                         {% endif %}
                     </td>
                 </tr>
