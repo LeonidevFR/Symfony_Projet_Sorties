@@ -18,7 +18,6 @@ class OutingController extends AbstractController
     /**
      * @Route("/create", name="create")
      */
-
     public function createOuting(Request $request): Response
     {
         $outing = new Outings();
@@ -56,7 +55,6 @@ class OutingController extends AbstractController
     /**
      * @Route("/edit/{id}", name="edit")
      */
-
     public function edit(Request $request, Outings $outing)
     {
 
@@ -118,7 +116,6 @@ class OutingController extends AbstractController
      * @Route("/unsuscribe/{id}", name="unsuscribe",
      *     requirements={"id": "\d+"})
      */
-
     public function unsuscribe(int $id)
     {
         $sortieRepository = $this->getDoctrine()->getRepository(Outings::class);
