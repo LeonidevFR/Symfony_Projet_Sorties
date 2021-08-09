@@ -108,7 +108,7 @@ class OutingController extends AbstractController
      * @Route("/subscribe/{id}", name="_subscribe")
      *  requirements={"id": "\d+"}
      */
-    public function subscription($id)
+    public function subscribe($id)
     {
         $SortieRepository = $this->getDoctrine()->getRepository(Outings::class);
         $sortie = $SortieRepository->find($id);
