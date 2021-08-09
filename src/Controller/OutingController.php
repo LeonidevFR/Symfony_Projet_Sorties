@@ -16,7 +16,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class OutingController extends AbstractController
 {
     /*
-     * @Route("", name="_view")
+     * @Route("/{id}", name="_view")
+     *  requirements={"id": "\d+"}
      */
     public function outingView($id): Response
     {
@@ -72,6 +73,7 @@ class OutingController extends AbstractController
 
     /**
      * @Route("/edit/{id}", name="_edit")
+     * requirements={"id": "\d+"}
      */
     public function edit(Request $request, Outings $outing)
     {
