@@ -78,17 +78,17 @@ class User implements UserInterface
     private $active;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="users")
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="Users")
      */
     private $campus;
 
     /**
-     * @ORM\OneToMany(targetEntity=Outings::class, mappedBy="author")
+     * @ORM\OneToMany(targetEntity=Outings::class, mappedBy="Author")
      */
     private $createdOutings;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Outings::class, mappedBy="members")
+     * @ORM\ManyToMany(targetEntity=Outings::class, mappedBy="Members")
      */
     private $outings;
 

@@ -32,12 +32,12 @@ class Campus
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=User::class, mappedBy="campus")
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="Campus")
      */
     private $users;
 
     /**
-     * @ORM\OneToMany(targetEntity=Outings::class, mappedBy="campus")
+     * @ORM\OneToMany(targetEntity=Outings::class, mappedBy="Campus")
      */
     private $outings;
 

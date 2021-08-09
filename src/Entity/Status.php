@@ -25,7 +25,7 @@ class Status
     private $wording;
 
     /**
-     * @ORM\OneToMany(targetEntity=Outings::class, mappedBy="status")
+     * @ORM\OneToMany(targetEntity=Outings::class, mappedBy="Status")
      */
     private $outings;
 

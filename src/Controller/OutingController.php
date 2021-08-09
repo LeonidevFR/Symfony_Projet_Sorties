@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class OutingController extends AbstractController
 {
     /**
-     * @Route("/{id}", name="_view")
+     * @Route("/view/{id}", name="_view")
      * requirements={"id": "\d+"}
      */
     public function outingView($id): Response
@@ -27,7 +27,7 @@ class OutingController extends AbstractController
             throw $this->createNotFoundException('Aucune sortie ne correspond a l\'ID'.$id);
         }
         return $this->render('outings/view.html.twig', [
-            'controller_name' => 'OutingViewController',
+            'controller_name' => 'OutingController',
             'view' => $view,
         ]);
     }
@@ -105,7 +105,7 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route("/subscription/{id}", name="_subscription")
+     * @Route("/subscribe/{id}", name="_subscribe")
      *  requirements={"id": "\d+"}
      */
     public function subscription($id)
