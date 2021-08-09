@@ -26,8 +26,12 @@ class OutingController extends AbstractController
         if(!$view){
             throw $this->createNotFoundException('Aucune sortie ne correspond a l\'ID'.$id);
         }
-        return $this->render('outings/view.html.twig');
+        return $this->render('outings/view.html.twig', [
+            'controller_name' => 'OutingViewController',
+            'view' => $view,
+        ]);
     }
+
     /**
      * @Route("/create", name="_create")
      */
