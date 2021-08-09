@@ -20,5 +20,11 @@ class EasyAdminSubscriber implements \Symfony\Component\EventDispatcher\EventSub
 
     public function beforeEntityUpdated(BeforeEntityUpdatedEvent $event)
     {
+        $entity = $event ->getEntityInstance();
+        if(!$entity instanceof User){
+            return;
+        }
+        $array = $entity->getRoles();
+        array_push($array,["ROLE_USER"]);
     }
 }

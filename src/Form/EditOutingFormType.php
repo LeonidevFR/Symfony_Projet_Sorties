@@ -42,7 +42,8 @@ class EditOutingFormType extends AbstractType
             ])
             ->add('Campus', EntityType::class,[
                 'class' =>Campus::class, 'choice_label'=> 'name'
-            ]);
+            ])
+
         ;
     }
 

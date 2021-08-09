@@ -10,10 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class OutingsController extends AbstractController
+class OutingController extends AbstractController
 {
     /**
-     * @Route("/outings", name="app_outings")
+     * @Route("/outing", name="app_outing")
      */
 
     public function createOuting(Request $request): Response
@@ -51,30 +51,13 @@ class OutingsController extends AbstractController
     }
 
     /**
-     * @Route("outings/edit", name="app_edit_outings")
-     */
-    public function editOuting($id)
-    {
-
-        $repository = $this->getDoctrine()->getRepository(Outings::class);
-        $outings = $repository->find($id);
-
-
-        return $this->render('outings/edit.html.twig', [
-            'edit' => $outings
-        ]);
-
-    }
-
-
-    /**
-     * @Route("outings/edit/{id}", name="app_edit_outings_id")
+     * @Route("outing/edit/{id}", name="app_edit_outing_id")
      */
 
     public function edit(Request $request, outings $outings)
     {
 
-        $outingForm = $this->createForm(OutingsFormType::class, $outings);
+        $outingForm = $this->createForm(OutingsFormType::class, $outing);
 
         $outingForm->handleRequest($request);
 
@@ -91,9 +74,9 @@ class OutingsController extends AbstractController
                 );
             if (!$query) {
                 $em->persist($city);
-                $outings->setCity($city);
+                $outing->setCity($city);
             } else
-                $outings->setCity($query);
+                $outing->setCity($query);
             $em->flush();
 
         }
@@ -103,7 +86,7 @@ class OutingsController extends AbstractController
     }
 
     /**
-     * @Route("/outing/view/{id}/subscription", name="app_outingsSubscription")
+     * @Route("/outing/view/{id}/subscription", name="app_outings_subscription")
      *  requirements={"id": "\d+"}
      */
     public function subscription($id)
@@ -129,11 +112,11 @@ class OutingsController extends AbstractController
     }
 
     /**
-     * @Route("/outing/view/{id}/unsuscrib", name="app_outingsUnsuscrib",
+     * @Route("/outing/view/unsuscribe/{id}", name="app_outings_unsuscribe",
      *     requirements={"id": "\d+"})
      */
 
-    public function unsuscrib(int $id)
+    public function unsuscribe(int $id)
     {
         $sortieRepository = $this->getDoctrine()->getRepository(Outings::class);
         $sortie = $sortieRepository->find($id);
