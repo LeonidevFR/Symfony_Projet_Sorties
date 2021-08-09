@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/outing", name="app_outing_')
+ * @Route("/outing", name="app_outing_")
  */
 class OutingController extends AbstractController
 {
@@ -113,7 +113,7 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route("/unsuscribe/{id}", name="unsuscribe",
+     * @Route("/unsubscribe/{id}", name="unsubscribe",
      *     requirements={"id": "\d+"})
      */
     public function unsuscribe(int $id)
