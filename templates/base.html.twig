@@ -2,11 +2,18 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>ENI Sorties {% block title %}{% endblock %}</title>
+        <title>{% block title %} ENI Sorties {% endblock %}</title>
         <link rel="stylesheet" href="{% block stylesheets %}{{ asset('css/appstyle.css') }}{% endblock %}">
         <script>{% block javascripts %}{% endblock %}</script>
     </head>
     <body>
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="flash flash-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <header>
         {% block header %}
             {% include 'include/nav.html.twig' %}

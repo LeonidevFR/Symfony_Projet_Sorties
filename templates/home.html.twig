@@ -1,12 +1,47 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="flash flash-{{ label }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endfor %}
-    HOME
+    {{ form_start(form) }}
+
+    {{ form_end(form) }}
+
+    <table style="text-align: center">
+        <thead>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits/Places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for outing in outings %}
+                <tr>
+                    <td>{{ outing.nameOuting }}</td>
+                    <td>{{ outing.dateHourOuting|date('d/m/Y') }}</td>
+                    <td>{{ outing.dateInscriptionLimit|date('d/m/Y') }}</td>
+                    <td>{{ outing.members|length }}/{{ outing.spotNumber }}</td>
+                    <td>{{ outing.status }}</td>
+                    <td>
+                        {% if app.user.pseudo in outing.members %}
+                            X
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_profil_view', {'string': outing.author }) }}">{{ outing.author }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if app.user.pseudo in outing.members %}
+                            <a href="{{ path('app_outings_unsuscribe') }}"></a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

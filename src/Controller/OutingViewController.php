@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Outings;
-use App\Repository\OutingsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,17 +10,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class OutingViewController extends AbstractController
 {
     /**
-     * @Route("/outing/view", name="outing_view")
+     * @Route("/outing/view/{id}", name="outing_view")
      */
-    public function index(): Response
+    public function outingView($id): Response
     {
 
         $view = $this->getDoctrine()->getRepository(Outings::class)->find($id);
-        dd($view);
+
+        if(!$view){
+            throw $this->createNotFoundException('Aucune sortie ne correspond a l\'ID'.$id);
+        }
 
 
         return $this->render('outing_view/index.html.twig', [
             'controller_name' => 'OutingViewController',
+            'view' => $view,
         ]);
     }
 }

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OutingsController!{% endblock %}
+
+{% block body %}
+
+    {{ form_start(outingForm) }}
+    {{ form_row(outingForm.nameOuting) }}
+    {{ form_row(outingForm.dateHourOuting) }}
+    {{ form_row(outingForm.dateInscriptionLimit) }}
+    {{ form_row(outingForm.spotNumber) }}
+    {{ form_row(outingForm.duration) }}
+    {{ form_row(outingForm.description) }}
+    {{ form_row(outingForm.Campus) }}
+    <div class="form-group">
+        <label for="ville-input">Ville : </label>
+        <input list="ville-select" id="ville-input" type="text" name="ville">
+        <datalist id="ville-select">
+        </datalist>
+    </div>
+
+    <div>
+        <label for="codePostal-select">Code Postal : </label>
+        <select style="width:200px;" id="codePostal-select" name="codePostal" disabled="true">
+        </select>
+    </div>
+    <button>Submit</button>
+
+{% endblock %}
+
+{% block endPageScript %}
+    <script src="{{ asset('script/app.js') }}"></script>
+{% endblock %}

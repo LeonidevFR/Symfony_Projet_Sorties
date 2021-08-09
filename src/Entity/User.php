@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,6 +17,12 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  */
 class User implements UserInterface
 {
+    public function __toString()
+    {
+        return $this->getPseudo();
+
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -73,6 +81,22 @@ class User implements UserInterface
      * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="users")
      */
     private $campus;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Outings::class, mappedBy="author")
+     */
+    private $createdOutings;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Outings::class, mappedBy="members")
+     */
+    private $outings;
+
+    public function __construct()
+    {
+        $this->createdOutings = new ArrayCollection();
+        $this->outings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -274,5 +298,62 @@ class User implements UserInterface
             'fields' => 'pseudo',
             'message' => 'Ce pseudo est déjà utilisé.'
         ]));
+    }
+
+    /**
+     * @return Collection|Outings[]
+     */
+    public function getCreatedOutings(): Collection
+    {
+        return $this->createdOutings;
+    }
+
+    public function addCreatedOuting(Outings $createdOuting): self
+    {
+        if (!$this->createdOutings->contains($createdOuting)) {
+            $this->createdOutings[] = $createdOuting;
+            $createdOuting->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreatedOuting(Outings $createdOuting): self
+    {
+        if ($this->createdOutings->removeElement($createdOuting)) {
+            // set the owning side to null (unless already changed)
+            if ($createdOuting->getAuthor() === $this) {
+                $createdOuting->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Outings[]
+     */
+    public function getOutings(): Collection
+    {
+        return $this->outings;
+    }
+
+    public function addOuting(Outings $outing): self
+    {
+        if (!$this->outings->contains($outing)) {
+            $this->outings[] = $outing;
+            $outing->addMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOuting(Outings $outing): self
+    {
+        if ($this->outings->removeElement($outing)) {
+            $outing->removeMember($this);
+        }
+
+        return $this;
     }
 }

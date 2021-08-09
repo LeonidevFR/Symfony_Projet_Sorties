@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StatusRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,6 +24,16 @@ class Status
      */
     private $wording;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Outings::class, mappedBy="status")
+     */
+    private $outings;
+
+    public function __construct()
+    {
+        $this->outings = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -37,5 +49,39 @@ class Status
         $this->wording = $wording;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Outings[]
+     */
+    public function getOutings(): Collection
+    {
+        return $this->outings;
+    }
+
+    public function addOuting(Outings $outing): self
+    {
+        if (!$this->outings->contains($outing)) {
+            $this->outings[] = $outing;
+            $outing->setStatus($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOuting(Outings $outing): self
+    {
+        if ($this->outings->removeElement($outing)) {
+            // set the owning side to null (unless already changed)
+            if ($outing->getStatus() === $this) {
+                $outing->setStatus(null);
+            }
+        }
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->getWording();
     }
 }

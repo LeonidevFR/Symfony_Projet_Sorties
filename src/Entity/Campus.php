@@ -13,9 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
 class Campus
 {
 
-    public function __toString(): string
+    public function __toString()
     {
-        return $this->getName();
+        return $this->name;
+
     }
 
     /**
@@ -122,4 +123,5 @@ class Campus
 
         return $this;
     }
+
 }

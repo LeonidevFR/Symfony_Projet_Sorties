@@ -1,13 +1,8 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}
+    {{ user.pseudo }}
+{% endblock %}
 {% block body %}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="flash flash-{{ label }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endfor %}
     <div class="container">
         <div>
             <img style="max-width: 450px; max-height: 900px;" src="{{ asset('img/userAvatar/' ~ user.avatar) }}" alt="Photo">
