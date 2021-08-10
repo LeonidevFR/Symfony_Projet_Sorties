@@ -72,7 +72,7 @@ class Outings
     private $city;
 
     /**
-     * @ORM\ManyToOne(targetEntity=status::class, inversedBy="outings")
+     * @ORM\ManyToOne(targetEntity=Status::class, inversedBy="outings")
      */
     private $status;
 
@@ -82,7 +82,7 @@ class Outings
     private $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity=user::class, inversedBy="outings")
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="outings")
      */
     private $members;
 

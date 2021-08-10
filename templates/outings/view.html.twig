@@ -13,6 +13,16 @@
     <p>Nombre de places : {{ view.spotNumber }}</p>
     <p>Durée de la sortie : {{ view.duration }} Minutes</p>
     <p>Description : {{ view.description }}</p>
+    <p>start : {{ start }}</p>
+    <p>now : {{ now }}</p>
+    <p>end : {{ end }}</p>
+    {# if date.now() < datesortie THEN Statut = ... elsif ... #}
+    {% set now = 'now'|date %}
+    {% if now < view.dateHourOuting %}
+        <p>Statut : {{ view.status }}</p>
+    {% else %}
+        <p>Statut : {{ view.status }}</p>
+    {% endif %}
     <p>Campus : {{ view.campus }}</p>
     <p>Ville : {{ view.city }}</p>
     <p>Code postal : {{ view.city.codePostal }}</p>

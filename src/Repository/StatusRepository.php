@@ -19,6 +19,16 @@ class StatusRepository extends ServiceEntityRepository
         parent::__construct($registry, Status::class);
     }
 
+    public function findStatusByName($statusName): ?Status
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.wording = :name')
+            ->setParameter('name', $statusName)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     // /**
     //  * @return Status[] Returns an array of Status objects
     //  */
@@ -47,4 +57,5 @@ class StatusRepository extends ServiceEntityRepository
         ;
     }
     */
+
 }

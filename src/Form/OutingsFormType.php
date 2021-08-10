@@ -6,6 +6,7 @@ use App\Entity\Campus;
 use App\Entity\Outings;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,14 +22,14 @@ class OutingsFormType extends AbstractType
             ->add('nameOuting', TextType::class, [
                 'label' => 'Nom de la sortie : ',
             ])
-            ->add('dateHourOuting', DateType::class, [
+            ->add('dateHourOuting', DateTimeType::class, [
                 'html5' => true,
-                "format" => 'yyyy-MM-dd',
-                "data" => new \DateTime(),
+                'widget' => 'single_text',
                 'label' => 'Date et heure de la sortie : ',
             ])
             ->add('dateInscriptionLimit', DateType::class, [
                 'html5' => true,
+                'widget' => 'single_text',
                 'label' => 'Date limite d\'inscription : ',
             ])
             ->add('spotNumber', TextType::class, [

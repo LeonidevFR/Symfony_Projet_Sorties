@@ -29,14 +29,12 @@ class ListOutingsFormType extends AbstractType
             ])
             ->add('dateStart', DateType::class, [
                 'label' => 'Entre',
-                'format' => 'dd / MM / yyyy',
+                'widget' => 'single_text',
                 'data' => new \DateTime(),
             ])
             ->add('dateEnd', DateType::class, [
                 'widget' => 'single_text',
-                'html5' => false,
                 'label' => 'et',
-                'format' => 'dd / MM / yyyy',
                 'data' => new \DateTime(),
             ])
             ->add('choiceAuthor', CheckboxType::class, [
