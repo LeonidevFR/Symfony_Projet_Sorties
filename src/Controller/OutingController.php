@@ -46,6 +46,7 @@ class OutingController extends AbstractController
 
         if ($outingForm->isSubmitted()) {
             $city = new City();
+
             $city->setName($request->get('ville'))
                 ->setCodePostal($request->get('codePostal'));
             $em = $this->getDoctrine()
@@ -55,6 +56,7 @@ class OutingController extends AbstractController
                 ->findOneBy(
                     ['codePostal' => $city->getCodePostal()]
                 );
+            $outing->setAuthor($this->getUser());
             if (!$query) {
                 $em->persist($city);
                 $outing->setCity($city);
