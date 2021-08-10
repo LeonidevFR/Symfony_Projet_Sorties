@@ -23,7 +23,7 @@ class EditOutingFormType extends AbstractType
                 'label' => 'Nom de la sortie : ',
             ])
             ->add('dateHourOuting', DateTimeType::class, [
-                "format" => 'yyyy-MM-dd',
+                'html5' => true,
                 'widget' => 'single_text',
                 'label' => 'Date et heure de la sortie : ',
             ])
