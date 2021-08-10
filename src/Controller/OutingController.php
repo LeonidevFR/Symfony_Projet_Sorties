@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Outings;
 use App\Form\OutingsFormType;
+use App\Repository\StatusRepository;
 use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,13 +21,34 @@ class OutingController extends AbstractController
      * @Route("/view/{id}", name="_view")
      * requirements={"id": "\d+"}
      */
-    public function outingView($id): Response
+    public function outingView($id, StatusRepository $statusRepository): Response
     {
         $view = $this->getDoctrine()->getRepository(Outings::class)->find($id);
 
         if(!$view){
             throw $this->createNotFoundException('Aucune sortie ne correspond a l\'ID'.$id);
         }
+
+        date_default_timezone_set('Europe/Paris');
+        $nowstr = date("d/m/Y H:i:s");
+        $str_date_outing = date_format($view->getDateHourOuting(), "d/m/Y H:i:s");
+        $date_outing = date_create_from_format("d/m/Y H:i:s", $str_date_outing);
+        $outing_duration = $view->getDuration();
+        $date_outing_end = date_modify($date_outing, '+' . $outing_duration . 'minutes');
+        $outing_end_str = date_format($date_outing_end, "d/m/Y H:i:s");
+        $spots_taken = count($view->getMembers());
+        $total_spots_number = $view->getSpotNumber();
+
+        if ($str_date_outing > $nowstr && ($spots_taken < $total_spots_number)) {
+            $view->setStatus($statusRepository->findStatusByName('Ouvert'));
+        } elseif ($str_date_outing > $nowstr && ($spots_taken >= $total_spots_number)) {
+            $view->setStatus($statusRepository->findStatusByName('Fermé'));
+        } elseif ($str_date_outing < $nowstr && $outing_end_str > $nowstr) {
+            $view->setStatus($statusRepository->findStatusByName('En cours'));
+        } elseif ($str_date_outing < $nowstr) {
+            $view->setStatus($statusRepository->findStatusByName('Passé'));
+        }
+
         return $this->render('outings/view.html.twig', [
             'controller_name' => 'OutingController',
             'view' => $view,

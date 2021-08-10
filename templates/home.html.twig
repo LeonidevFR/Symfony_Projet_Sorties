@@ -5,7 +5,7 @@
 
     {{ form_end(form) }}
 
-    <table style="text-align: center;border: solid 1px black;">
+    <table style="text-align: center">
         <thead>
             <tr>
                 <th>Nom de la sortie</th>
@@ -32,13 +32,11 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('app_outing_view', {'id': outing.id}) }}">Afficher</a>
-                        {% if now < outing.dateInscriptionLimit and outing.members < outing.spotNumber %}
-                            {% if app.user.pseudo in outing.members%}
-                                <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
-                            {% else %}
-                                <a href="{{ path('app_outing_subscribe',{ 'id': outing.id }) }}">S'inscrire</a>
-                            {% endif %}
+                        <a href="{{ path('app_outing_view', {'id' : outing.id}) }}">Afficher</a>
+                        {% if app.user.pseudo in outing.members %}
+                            <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
+                        {% else %}
+                            <a href="{{ path('app_outing_subscribe',{ 'id': outing.id }) }}">S'inscrire</a>
                         {% endif %}
                     </td>
                 </tr>
