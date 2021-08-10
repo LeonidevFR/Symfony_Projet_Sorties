@@ -17,11 +17,10 @@ class ListOutingsFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Campus',EntityType::class, [
+            ->add('campus',EntityType::class, [
                 'class' => Campus::class,
                 'choice_label' => 'name',
                 'required' => false,
-                'placeholder' => '- - -'
             ])
             ->add('nameContains',TextType::class, [
                 'label' => 'Le nom de la sortie contient :',
@@ -40,10 +39,10 @@ class ListOutingsFormType extends AbstractType
             ->add('choiceAuthor', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('choiceRegister', CheckboxType::class, [
+            ->add('choiceRegistered', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('choiceNotRegister', CheckboxType::class, [
+            ->add('choiceNotRegistered', CheckboxType::class, [
                 'required' => false,
             ])
             ->add('choiceFinished', CheckboxType::class, [

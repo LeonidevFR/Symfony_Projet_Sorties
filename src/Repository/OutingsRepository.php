@@ -2,9 +2,14 @@
 
 namespace App\Repository;
 
+use App\Entity\Campus;
 use App\Entity\Outings;
+use App\Entity\Status;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use function Doctrine\ORM\QueryBuilder;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
 
 /**
  * @method Outings|null find($id, $lockMode = null, $lockVersion = null)
@@ -47,4 +52,24 @@ class OutingsRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByParameter(User $user,$campus, $author , $memberTrue, $memberFalse) {
+        $queryBuilder = $this->createQueryBuilder('o');
+        if($author) {
+            $queryBuilder->where('o.author = :author')
+                        ->setParameter('author', $user);
+        }
+        if($memberTrue) {
+            $queryBuilder
+                ->where($queryBuilder->expr()->isMemberOf(':member','o.members'))
+                ->setParameter(':member',$user);
+        }
+        if($memberFalse) {
+            $queryBuilder
+                ->where($queryBuilder->expr()->isMemberOf(':member','o.members'))
+                ->setParameter(':member',$user == false);
+        }
+
+        $result = $queryBuilder->getQuery()->getResult();
+        return $result;
+    }
 }
