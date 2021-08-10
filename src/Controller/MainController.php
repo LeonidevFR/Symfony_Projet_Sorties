@@ -23,10 +23,15 @@ class MainController extends AbstractController
         }
 
         $outingsRepo = $this->getDoctrine()->getRepository(Outings::class);
+        $all_outings = $outingsRepo->findAll();
+
+        foreach ($all_outings as $outing) {
+
+        }
 
         return $this->render('home.html.twig', [
             'form' => $form->createView(),
-            'outings' => $outingsRepo->findAll()
+            'outings' => $all_outings
         ]);
     }
 }

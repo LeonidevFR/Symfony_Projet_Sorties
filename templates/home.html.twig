@@ -32,10 +32,6 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('app_profil_view', {'string': outing.author }) }}">{{ outing.author }}
-                        </a>
-                    </td>
-                    <td>
                         <a href="{{ path('app_outing_view', {'id' : outing.id}) }}">Afficher</a>
                         {% if app.user.pseudo in outing.members %}
                             <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>

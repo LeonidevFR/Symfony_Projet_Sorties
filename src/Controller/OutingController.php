@@ -48,9 +48,6 @@ class OutingController extends AbstractController
         return $this->render('outings/view.html.twig', [
             'controller_name' => 'OutingController',
             'view' => $view,
-            'end' => $outing_end_str,
-            'now' => $nowstr,
-            'start' => $str_date_outing
         ]);
     }
 
