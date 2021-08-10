@@ -21,9 +21,17 @@ class MainController extends AbstractController
     {
         $form = $this->createForm(ListOutingsFormType::class);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-
+        $repository = $this->getDoctrine()->getRepository(Outings::class);
+        $campus = $form->get('campus')->getData();
+        $choiceAuthor = $form->get('choiceAuthor')->getData();
+        $choiceRegistered = $form->get('choiceRegistered')->getData();
+        $choiceNotRegistered = $form->get('choiceNotRegistered')->getData();
+        if($form->isSubmitted() && $form->isValid() && ($campus != null || $choiceAuthor == true || $choiceRegistered == true || $choiceNotRegistered == true)){
+            $results = $repository->findByParameter($user,$campus,$choiceAuthor,$choiceRegistered,$choiceNotRegistered);
+        } else {
+            $results = $this->getDoctrine()->getRepository(Outings::class)->findAll();
         }
+
 
         $outingsRepo = $this->getDoctrine()->getRepository(Outings::class);
         $all_outings = $outingsRepo->findAll();

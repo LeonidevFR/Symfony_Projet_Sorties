@@ -23,7 +23,6 @@
     <p>Ville : {{ view.city }}</p>
     <p>Code postal : {{ view.city.codePostal }}</p>
 </div>
-
 <div>
     <table>
         <thead>
@@ -33,10 +32,10 @@
             </tr>
         </thead>
         <tbody>
-            {% for member in view %}
+            {% for member in view.members %}
                 <tr>
-                    <td>{{ member }}</td>
-                    <td>{{ member }}</td>
+                    <td>{{ member.pseudo }}</td>
+                    <td>{{ member.firstName }}</td>
                 </tr>
             {% endfor %}
         </tbody>
