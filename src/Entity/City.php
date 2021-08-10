@@ -30,7 +30,7 @@ class City
     private $codePostal;
 
     /**
-     * @ORM\OneToMany(targetEntity=Outings::class, mappedBy="city")
+     * @ORM\OneToMany(targetEntity=Outings::class, mappedBy="City")
      */
     private $outings;
 

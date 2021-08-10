@@ -36,9 +36,11 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ path('app_outing_view', {'id' : outing.id}) }}"
+                        <a href="{{ path('app_outing_view', {'id' : outing.id}) }}">Afficher</a>
                         {% if app.user.pseudo in outing.members %}
                             <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
+                        {% else %}
+                            <a href="{{ path('app_outing_subscribe',{ 'id': outing.id }) }}">S'inscrire</a>
                         {% endif %}
                     </td>
                 </tr>
