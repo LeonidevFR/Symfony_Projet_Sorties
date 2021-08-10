@@ -5,7 +5,7 @@
 
     {{ form_end(form) }}
 
-    <table style="text-align: center">
+    <table style="text-align: center;border: solid 1px black;">
         <thead>
             <tr>
                 <th>Nom de la sortie</th>
@@ -32,11 +32,24 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{{ path('app_outing_view', {'id' : outing.id}) }}">Afficher</a>
-                        {% if app.user.pseudo in outing.members %}
-                            <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
+                        <a href="{{ path('app_profil_view', {'string': outing.author}) }}">{{ outing.author }}</a>
+                    </td>
+                    <td>
+                        {% if outing.author == app.user %}
+                            <a href="{{ path('app_outing_edit', {'id': outing.id }) }}">Modifier</a>
+                            {% if outing.status == "En création" %}
+                                <a href="{{ path('') }}"></a>
+                            {% endif %}
                         {% else %}
-                            <a href="{{ path('app_outing_subscribe',{ 'id': outing.id }) }}">S'inscrire</a>
+                            <a href="{{ path('app_outing_view', {'id': outing.id}) }}">Afficher</a>
+                        {% endif %}
+
+                        {% if now < outing.dateInscriptionLimit and outing.members < outing.spotNumber %}
+                            {% if app.user.pseudo in outing.members%}
+                                <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
+                            {% else %}
+                                <a href="{{ path('app_outing_subscribe',{ 'id': outing.id }) }}">S'inscrire</a>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>
