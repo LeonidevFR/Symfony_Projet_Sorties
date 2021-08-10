@@ -21,6 +21,7 @@ class MainController extends AbstractController
     {
         $form = $this->createForm(ListOutingsFormType::class);
         $form->handleRequest($request);
+        $user = $this->getUser();
         $repository = $this->getDoctrine()->getRepository(Outings::class);
         $campus = $form->get('campus')->getData();
         $choiceAuthor = $form->get('choiceAuthor')->getData();
