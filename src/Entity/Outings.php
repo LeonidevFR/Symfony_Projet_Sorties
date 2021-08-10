@@ -37,6 +37,11 @@ class Outings
     /**
      * @ORM\Column(type="date")
      * @Assert\NotBlank()
+     * @Assert\Date()
+     * @Assert\Expression(
+     *     "this.getDateHourOuting() < this.getDateInscriptionLimit()",
+     *     message="La date fin ne doit pas être antérieure à la date début"
+     * )
      */
     private $dateInscriptionLimit;
 

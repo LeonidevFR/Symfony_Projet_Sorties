@@ -6,6 +6,7 @@
         {% if app.user %}
             <a href="{{ path('app_logout') }}" title="Se déconnecter">Se déconnecter</a>
             <a href="{{ path('app_profil_view', {'string': app.user.pseudo}) }}">Mon profil</a>
+            <a href="{{ path('app_outing_create', {'string': app.user.pseudo}) }}">Créer une sortie</a>
             {% if is_granted("ROLE_ADMIN") %}
                 <a href="{{ path('app_admin') }}" title="Panneau Admin">Panneau admin</a>
             {% endif %}

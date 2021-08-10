@@ -24,7 +24,6 @@ class OutingsFormType extends AbstractType
             ])
             ->add('dateHourOuting', DateTimeType::class, [
                 'html5' => true,
-                'widget' => 'single_text',
                 'label' => 'Date et heure de la sortie : ',
             ])
             ->add('dateInscriptionLimit', DateType::class, [
