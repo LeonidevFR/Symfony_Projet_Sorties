@@ -26,6 +26,7 @@ class OutingsFormType extends AbstractType
             ->add('dateHourOuting', DateTimeType::class, [
                 'widget' => 'single_text',
                 'label' => 'Date et heure de la sortie : ',
+                'data' => null,
                 'attr' => ['class' => 'dateHourOuting'],
                 'by_reference' => true,
             ])
@@ -38,7 +39,6 @@ class OutingsFormType extends AbstractType
             ->add('spotNumber', NumberType::class, [
                 'html5' => true,
                 'label' => 'Nombre de place : ',
-
             ])
             ->add('duration', NumberType::class, [
                 'html5' => true,

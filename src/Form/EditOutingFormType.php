@@ -25,13 +25,13 @@ class EditOutingFormType extends AbstractType
             ])
             ->add('dateHourOuting', DateTimeType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date et heure de la sortie : ',
+                'label' => 'Date et heure de la sortie :',
                 'attr' => ['class' => 'dateHourOuting'],
                 'by_reference' => true,
             ])
             ->add('dateInscriptionLimit', DateType::class, [
                 'widget' => 'single_text',
-                'label' => 'Date limite d\'inscription : ',
+                'label' => 'Date limite d\'inscription :',
                 'attr' => ['class' => 'dateInscriptionLimit'],
                 'by_reference' => true,
             ])

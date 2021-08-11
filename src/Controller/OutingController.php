@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\Outings;
+use App\Entity\User;
 use App\Form\OutingsFormType;
 use App\Repository\OutingsRepository;
 use App\Repository\StatusRepository;
 use phpDocumentor\Reflection\Types\String_;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,10 +71,12 @@ class OutingController extends AbstractController
 
         $outingForm->handleRequest($request);
 
-        if ($outingForm->isSubmitted()) {
+        if ($outingForm->isSubmitted() && $outingForm->isValid()) {
             $city = new City();
-            $city->setName($request->get('ville'))
-                ->setCodePostal($request->get('codePostal'));
+            $cityName = $request->get('ville');
+            $codePostal = $request->get('codePostal');
+            $city->setName($cityName)
+                ->setCodePostal($codePostal);
             $em = $this->getDoctrine()
                 ->getManager();
             $query = $this->getDoctrine()
@@ -95,7 +99,7 @@ class OutingController extends AbstractController
         }
 
         return $this->render('outings/outings.html.twig', [
-            'outingForm' => $outingForm->createView()
+            'outingForm' => $outingForm->createView(),
         ]);
     }
 
@@ -105,16 +109,23 @@ class OutingController extends AbstractController
      */
     public function edit(Request $request, Outings $outing)
     {
-        if($this->getUser() != $outing->getAuthor()) {
-            return $this->redirectToRoute('app_you_shall_not_pass');
-        } elseif ($this->getUser() == $outing->getAuthor()) {
-
+        $user = $this->getUser();
+        $admin = false;
+        foreach ($user->getRoles() as $role){
+            dump($role);
+            if($role == "ROLE_ADMIN")
+                $admin = true;
+        }
+        dump($admin);
+        if(!$admin && $user != $outing->getAuthor()) {
+            $request->getSession()->getFlashBag()->add('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
+            return new RedirectResponse('http://localhost/Symfony_Projet_Sorties/public/');
+        } else {
             $oldcity = $outing->getCity();
             $outing->setCity($oldcity);
             $outingForm = $this->createForm(OutingsFormType::class, $outing);
             $outingForm->handleRequest($request);
-
-            if ($outingForm->isSubmitted()) {
+            if ($outingForm->isSubmitted() && $outingForm->isValid()) {
                 $city = new City();
                 $city->setName($request->get('ville'))
                     ->setCodePostal($request->get('codePostal'));
@@ -149,7 +160,7 @@ class OutingController extends AbstractController
         $SortieRepository = $this->getDoctrine()->getRepository(Outings::class);
         $sortie = $SortieRepository->find($id);
 
-        // on inscrit l'utilisateur que si le côtat le permet
+        // on inscrit l'utilisateur que si le quotas le permet
         if(count($sortie->getMembers()) < $sortie->getSpotNumber())
         {
             $sortie->addMember($this->getUser());
@@ -160,7 +171,7 @@ class OutingController extends AbstractController
         }
         else
         {
-            $this->addFlash('danger', "Dommage il semblerait qu'il n'y est plus de place pour cette sortie ! ");
+            $this->addFlash('danger', "Dommage il semblerait qu'il n'y ai plus de place pour cette sortie ! ");
         }
 
         return $this->redirectToRoute('app_main_home');
@@ -193,10 +204,18 @@ class OutingController extends AbstractController
      * @Route("/remove/{id}", name="_remove",
      *     requirements={"id": "\d+"})
      */
-    public function remove(Outings $outing)
+    public function remove(Request $request, Outings $outing)
     {
-        if($this->getUser() != $outing->getAuthor()) {
-            return $this->redirectToRoute('app_you_shall_not_pass');
+        $user = $this->getUser();
+        $admin = false;
+        foreach ($user->getRoles() as $role){
+            dump($role);
+            if($role == "ROLE_ADMIN")
+                $admin = true;
+        }
+        if($this->getUser() != $outing->getAuthor() && !$admin) {
+            $request->getSession()->getFlashBag()->add('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
+            return new RedirectResponse('http://localhost/Symfony_Projet_Sorties/public/');
         } elseif ($this->getUser() == $outing->getAuthor()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($outing);

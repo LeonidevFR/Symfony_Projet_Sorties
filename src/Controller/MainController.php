@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Outings;
+use App\Entity\User;
 use App\Form\ListOutingsFormType;
 use App\Repository\OutingsRepository;
 use App\Repository\StatusRepository;
@@ -22,22 +23,44 @@ class MainController extends AbstractController
         $form = $this->createForm(ListOutingsFormType::class);
         $form->handleRequest($request);
         $user = $this->getUser();
-        $repository = $this->getDoctrine()->getRepository(Outings::class);
-        $campus = $form->get('campus')->getData();
-        $choiceAuthor = $form->get('choiceAuthor')->getData();
-        $choiceRegistered = $form->get('choiceRegistered')->getData();
-        $choiceNotRegistered = $form->get('choiceNotRegistered')->getData();
-        if($form->isSubmitted() && $form->isValid() && ($campus != null || $choiceAuthor == true || $choiceRegistered == true || $choiceNotRegistered == true)){
-            $results = $repository->findByParameter($user,$campus,$choiceAuthor,$choiceRegistered,$choiceNotRegistered);
+        $repositoryOutings = $this->getDoctrine()->getRepository(Outings::class);
+        if($form->isSubmitted() && $form->isValid()) {
+            $datas = $form->getData();
+            $campus = $datas['campus'] ?? null;
+            $contains = $datas['nameContains'] ?? null;
+            $dateDebut = $datas['dateStart'];
+            $dateFin = $datas['dateEnd'];
+            if($datas['choiceAuthor']){
+                $isAuthor = $datas['choiceAuthor'];
+            } else {
+                $isAuthor = null;
+            }
+            if($datas['choiceRegistered']){
+                $isRegistered = $datas['choiceRegistered'];
+            } else {
+                $isRegistered = null;
+            }
+            if($datas['choiceNotRegistered']){
+                $isUnregistered = $datas['choiceNotRegistered'];
+            } else {
+                $isUnregistered = null;
+            }
+            if($datas['choiceFinished']){
+                $isFinished = $datas['choiceFinished'];
+            } else {
+                $isFinished = null;
+            }
+            /*dump($isAuthor);
+            dump($isRegistered);
+            dump($isUnregistered);
+            dump($isFinished);
+            dd($datas);*/
+            $results = $repositoryOutings->findByParameters($user,$campus,$contains,$dateDebut,$dateFin, $isAuthor, $isRegistered, $isUnregistered, $isFinished);
         } else {
             $results = $this->getDoctrine()->getRepository(Outings::class)->findAll();
         }
 
-
-        $outingsRepo = $this->getDoctrine()->getRepository(Outings::class);
-        $all_outings = $outingsRepo->findAll();
-
-        foreach ($all_outings as $outing) {
+        foreach ($results as $outing) {
             date_default_timezone_set('Europe/Paris');
             $nowstr = date("d/m/Y H:i:s");
             $str_date_outing = date_format($outing->getDateHourOuting(), "d/m/Y H:i:s");
@@ -65,16 +88,7 @@ class MainController extends AbstractController
 
         return $this->render('home.html.twig', [
             'form' => $form->createView(),
-            'outings' => $all_outings
+            'outings' => $results
         ]);
     }
-
-    /**
-     * @Route("/nope", name="app_you_shall_not_pass")
-     */
-    public function youshallnotpass()
-    {
-        return $this->render('outings/youshallnotpass.html.twig');
-    }
-
 }

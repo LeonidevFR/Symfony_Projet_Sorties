@@ -14,7 +14,7 @@ window.onload = () => {
         };
         codePostalSelect.setAttribute('disabled', true);
         let url = '';
-        if(villeInput.length >= 3) {
+        if(villeInput.length >= 1) {
             let i = 0;
             url = 'https://geo.api.gouv.fr/communes/?nom=' + villeInput + '&fields=codesPostaux';
             Http.open("GET", url);

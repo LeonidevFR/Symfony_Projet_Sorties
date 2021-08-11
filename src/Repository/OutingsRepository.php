@@ -52,24 +52,52 @@ class OutingsRepository extends ServiceEntityRepository
         ;
     }
     */
-    public function findByParameter(User $user,$campus, $author , $memberTrue, $memberFalse) {
-        $queryBuilder = $this->createQueryBuilder('o');
-        if($author) {
-            $queryBuilder->where('o.author = :author')
-                        ->setParameter('author', $user);
-        }
-        if($memberTrue) {
-            $queryBuilder
-                ->where($queryBuilder->expr()->isMemberOf(':member','o.members'))
-                ->setParameter(':member',$user);
-        }
-        if($memberFalse) {
-            $queryBuilder
-                ->where($queryBuilder->expr()->isMemberOf(':member','o.members'))
-                ->setParameter(':member',$user == false);
-        }
+    public function findByParameters($self,
+                                    $campus,
+                                    $contains,
+                                    $dateDebut,
+                                    $dateFin,
+                                    $isAuthor,
+                                    $isRegistered,
+                                    $isUnregistered,
+                                    $isFinished)
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->leftJoin('o.members', 'm')
+            ->leftJoin('o.campus', 'c')
+            ->leftJoin('o.status', 's');
 
-        $result = $queryBuilder->getQuery()->getResult();
-        return $result;
+        if(null != $campus){
+            $qb->andWhere('c = :campus')
+                ->setParameter('campus', $campus);
+        }
+        if(null != $contains){
+            $qb->andWhere('o.nameOuting LIKE :contains')
+                ->setParameter('contains', '%'.$contains.'%');
+        }
+        if($dateDebut != $dateFin){
+            $qb->andWhere('o.dateHourOuting >= :dateDebut')
+                ->andWhere('o.dateHourOuting <= :dateFin')
+                ->setParameters([
+                    'dateDebut' => $dateDebut,
+                    'dateFin' => $dateFin
+                ]);
+        }
+        if(null != $isAuthor)
+            $qb->andWhere('o.author = :self')
+                ->setParameter('self', $self);
+        if(null != $isRegistered || null != $isUnregistered) {
+            if(null != $isRegistered) {
+                $qb->andWhere('m = :self')
+                    ->setParameter('self', $self);
+            } else {
+                $qb->andWhere('m != :self')
+                    ->setParameter('self', $self);
+            }
+        }
+        if(null != $isFinished)
+            $qb->andWhere('s.wording = :term')
+            ->setParameter('term', 'Passé');
+        return $qb->getQuery()->getResult();
     }
 }

@@ -38,15 +38,19 @@ class ListOutingsFormType extends AbstractType
             ])
             ->add('choiceAuthor', CheckboxType::class, [
                 'required' => false,
+                'label' => 'Sorties dont je suis l\'organisateur/trice',
             ])
             ->add('choiceRegistered', CheckboxType::class, [
                 'required' => false,
+                'label' => 'Sorties auxquelles je suis inscrit/e',
             ])
             ->add('choiceNotRegistered', CheckboxType::class, [
                 'required' => false,
+                'label' => 'Sorties auxquelles je ne suis pas inscrit/e',
             ])
             ->add('choiceFinished', CheckboxType::class, [
                 'required' => false,
+                'label' => 'Sorties passées',
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Rechercher',
