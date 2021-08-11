@@ -21,7 +21,7 @@ class OutingsFormType extends AbstractType
     {
         $builder
             ->add('nameOuting', TextType::class, [
-                'label' => 'Nom de la sortie : ',
+                'label' => 'Name de la sortie : ',
             ])
             ->add('dateHourOuting', DateTimeType::class, [
                 'widget' => 'single_text',
