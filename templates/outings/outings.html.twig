@@ -1,42 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OutingsController!{% endblock %}
+{% block title %}Créer Sortie{% endblock %}
 
 {% block body %}
 
 
-<div class="example-wrapper">
-    <h1>Créer une sortie</h1>
+<div class="container-fluid pt-3">
+        <div class="row">
+            <div class="col">
+                <h2>Créer une sortie</h2>
+                <hr>
+            </div>
+        </div>
 
-
-    <div class="outing_form">
         {{ form_start(outingForm) }}
-        {{ form_row(outingForm.nameOuting) }}
-        <div class="datetime-widget" style="overflow: hidden;  text-overflow: ellipsis; white-space: nowrap;">
-                        {{form_label(outingForm.dateHourOuting)}}
-                        {{form_widget(outingForm.dateHourOuting)}}
-                    </div>
-        <div class="date" style="overflow: hidden;  text-overflow: ellipsis; white-space: nowrap;">
-                        {{form_label(outingForm.dateInscriptionLimit)}}
-                        {{form_widget(outingForm.dateInscriptionLimit)}}
-                    </div>
-        {{ form_row(outingForm.spotNumber) }}
-        {{ form_row(outingForm.duration) }}
-        {{ form_row(outingForm.description) }}
-        {{ form_row(outingForm.Campus) }}
-            <div class="form-group">
-                <label for="ville-input">Ville : </label>
-                <input list="ville-select" id="ville-input" type="text" name="ville">
-                <datalist id="ville-select">
-                </datalist>
+         <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="d-flex flex-column">
+                    <div class="p-2"><strong>{{ form_row(outingForm.nameOuting) }}</strong></div>
+                    <div class="datetime-widget p-2"><strong>{{form_row(outingForm.dateHourOuting)}}</strong></div>
+                    <div class="date p-2"><strong>{{form_row(outingForm.dateInscriptionLimit)}}</strong></div>
+                    <div class="p-2"><strong>{{ form_row(outingForm.spotNumber) }}</strong></div>
+                    <div class="p-2"><strong>{{ form_row(outingForm.duration, {'attr': {'placeholder': 'en minutes.'}}) }}</strong></div>
+                    <div class="p-2"><strong>{{ form_row(outingForm.description) }}</strong></div>
+                    <div class="p-2"><strong>{{ form_row(outingForm.Campus) }}</strong></div>
+                </div>
+            <div class="d-flex flex-column">
+                <div class="form-group">
+                    <label for="ville-input">Ville : </label>
+                    <input list="ville-select" id="ville-input" type="text" name="ville" placeholder="Chercher une ville">
+                    <datalist id="ville-select">
+                    </datalist>
+                </div>
+
+                <div>
+                    <label for="codePostal-select">Code Postal : </label>
+                    <select style="width:200px;" id="codePostal-select" name="codePostal" disabled="true">
+                    </select>
+                </div>
             </div>
 
-            <div>
-                <label for="codePostal-select">Code Postal : </label>
-                <select style="width:200px;" id="codePostal-select" name="codePostal" disabled="true">
-                </select>
+            <button class="btn btn-outline-dark">Envoyer</button>
+
             </div>
-            <button>Submit</button>
+        </div>
 {% endblock %}
 
 {% block endPageScript %}
