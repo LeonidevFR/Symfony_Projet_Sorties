@@ -12,8 +12,14 @@
     <div class="outing_form">
         {{ form_start(outingForm) }}
         {{ form_row(outingForm.nameOuting) }}
-        {{ form_row(outingForm.dateHourOuting) }}
-        {{ form_row(outingForm.dateInscriptionLimit) }}
+        <div class="datetime-widget" style="overflow: hidden;  text-overflow: ellipsis; white-space: nowrap;">
+                        {{form_label(outingForm.dateHourOuting)}}
+                        {{form_widget(outingForm.dateHourOuting)}}
+                    </div>
+        <div class="date" style="overflow: hidden;  text-overflow: ellipsis; white-space: nowrap;">
+                        {{form_label(outingForm.dateInscriptionLimit)}}
+                        {{form_widget(outingForm.dateInscriptionLimit)}}
+                    </div>
         {{ form_row(outingForm.spotNumber) }}
         {{ form_row(outingForm.duration) }}
         {{ form_row(outingForm.description) }}
