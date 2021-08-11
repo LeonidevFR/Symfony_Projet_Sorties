@@ -1,19 +1,36 @@
-<div class="flex">
-    <img src="{{ asset('img/favicon-96x96.png') }}" alt="Logo Sortir.com">
-    <h1 class="site-name">Sortir.com</h1>
-    <nav>
-        <a href="{{ path('app_main_home') }}" title="Accueil">Accueil</a>
-        {% if app.user %}
-            <a href="{{ path('app_logout') }}" title="Se déconnecter">Se déconnecter</a>
-            <a href="{{ path('app_profil_view', {'string': app.user.pseudo}) }}">Mon profil</a>
-            <a href="{{ path('app_outing_create', {'string': app.user.pseudo}) }}">Créer une sortie</a>
-            {% if is_granted("ROLE_ADMIN") %}
-                <a href="{{ path('app_admin') }}" title="Panneau Admin">Panneau admin</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#"><img src="{{ asset('img/favicon-96x96.png') }}" alt="Logo Sortir.com"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('app_main_home') }}" title="Accueil">Accueil <span class="sr-only">(current)</span></a>
+            </li>
+            {% if app.user %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_profil_view', {'string': app.user.pseudo}) }}">Profil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_outing_create', {'string': app.user.pseudo}) }}">Créer Sortie</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_logout') }}" title="Se déconnecter">Déconnexion</a>
+            </li>
+                {% if is_granted("ROLE_ADMIN") %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_admin') }}" title="Panneau Admin">Admin Panel</a>
+                </li>
+                {% endif %}
+                    {% else %}
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ path('app_login') }}" title="Se connecter">Se connecter</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ path('app_registration_register') }}" title="S'inscrire">S'inscrire</a>
+                        </li>
             {% endif %}
-        {% else %}
-            <a href="{{ path('app_login') }}" title="Se connecter">Se connecter</a>
-            <a href="{{ path('app_registration_register') }}" title="S'inscrire">S'inscrire</a>
-            {# Si l'user est connecté, enlever le lien se connecter et afficher les liens : mon profil et se déconnecter #}
-        {% endif %}
-    </nav>
-</div>
+        </ul>
+    </div>
+</nav>

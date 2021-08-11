@@ -46,6 +46,7 @@ class OutingsFormType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description et infos : ',
+                'attr' => ['rows' => 5, 'cols' => 33, 'wrap' => 'hard'],
             ])
             ->add('Campus', EntityType::class,[
                 'class' =>Campus::class, 'choice_label'=> 'name',
