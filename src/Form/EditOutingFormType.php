@@ -23,14 +23,16 @@ class EditOutingFormType extends AbstractType
                 'label' => 'Nom de la sortie : ',
             ])
             ->add('dateHourOuting', DateTimeType::class, [
-                'html5' => true,
                 'widget' => 'single_text',
                 'label' => 'Date et heure de la sortie : ',
+                'attr' => ['class' => 'dateHourOuting'],
+                'by_reference' => true,
             ])
             ->add('dateInscriptionLimit', DateType::class, [
-                'html5' => true,
                 'widget' => 'single_text',
                 'label' => 'Date limite d\'inscription : ',
+                'attr' => ['class' => 'dateInscriptionLimit'],
+                'by_reference' => true,
             ])
             ->add('spotNumber', TextType::class, [
                 'label' => 'Nombre de place : ',
