@@ -36,6 +36,7 @@ class OutingsFormType extends AbstractType
             ])
             ->add('spotNumber', TextType::class, [
                 'label' => 'Nombre de place : ',
+
             ])
             ->add('duration', TextType::class, [
                 'label' => 'Durée : ',
@@ -44,7 +45,8 @@ class OutingsFormType extends AbstractType
                 'label' => 'Description et infos : ',
             ])
             ->add('Campus', EntityType::class,[
-                'class' =>Campus::class, 'choice_label'=> 'name'
+                'class' =>Campus::class, 'choice_label'=> 'name',
+                'label' => 'Campus : ',
             ]);
     }
 
