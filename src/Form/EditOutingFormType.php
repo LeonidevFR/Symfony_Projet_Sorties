@@ -8,6 +8,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,11 +35,13 @@ class EditOutingFormType extends AbstractType
                 'attr' => ['class' => 'dateInscriptionLimit'],
                 'by_reference' => true,
             ])
-            ->add('spotNumber', TextType::class, [
+            ->add('spotNumber', NumberType::class, [
+                'html5' => true,
                 'label' => 'Nombre de place : ',
             ])
-            ->add('duration', TextType::class, [
-                'label' => 'Durée : ',
+            ->add('duration', NumberType::class, [
+                'html5' => true,
+                'label' => 'Durée (en minutes) : ',
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description et infos : ',

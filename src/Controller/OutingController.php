@@ -85,12 +85,13 @@ class OutingController extends AbstractController
                 $outing->setCity($city);
             } else
                 $outing->setCity($query);
-            $outing->setAuthor($this->getUser());
-            $outing->setStatus($statusRepository->findStatusByName('En création'));
-            $em->persist($outing);
-            $em->flush();
-            return new Response('Sortie bien enregistré.');
 
+            if ($outingForm->isValid()) {
+                $outing->setAuthor($this->getUser());
+                $em->persist($outing);
+                $em->flush();
+                return new Response('Sortie bien enregistré.');
+            }
         }
 
         return $this->render('outings/outings.html.twig', [
@@ -108,6 +109,8 @@ class OutingController extends AbstractController
             return $this->redirectToRoute('app_you_shall_not_pass');
         } elseif ($this->getUser() == $outing->getAuthor()) {
 
+            $oldcity = $outing->getCity();
+            $outing->setCity($oldcity);
             $outingForm = $this->createForm(OutingsFormType::class, $outing);
             $outingForm->handleRequest($request);
 

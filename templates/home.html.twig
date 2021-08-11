@@ -7,50 +7,54 @@
 
     <table style="text-align: center;border: solid 1px black;">
         <thead>
-        <tr>
-            <th>Nom de la sortie</th>
-            <th>Date de la sortie</th>
-            <th>Clôture</th>
-            <th>Inscrits/Places</th>
-            <th>Etat</th>
-            <th>Inscrit</th>
-            <th>Organisateur</th>
-            <th>Actions</th>
-        </tr>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Clôture</th>
+                <th>Inscrits/Places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
-        {% for outing in outings %}
-            <tr>
-                <td>{{ outing.nameOuting }}</td>
-                <td>{{ outing.dateHourOuting|date('d/m/Y H:i') }}</td>
-                <td>{{ outing.dateInscriptionLimit|date('d/m/Y') }}</td>
-                <td>{{ outing.members|length }}/{{ outing.spotNumber }}</td>
-                <td>{{ outing.status }}</td>
-                <td>
-                    {% if app.user.pseudo in outing.members %}
-                        X
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{{ path('app_profil_view', {'string': outing.author}) }}">{{ outing.author }}</a>
-                </td>
-                <td>
-                    {% if outing.author == app.user %}
-                        <a href="{{ path('app_outing_edit', {'id': outing.id }) }}">Modifier</a>
-                        <a href="{{ path('app_outing_remove', {'id': outing.id}) }}">Supprimer</a>
-                    {% else %}
-                        <a href="{{ path('app_outing_view', {'id': outing.id}) }}">Afficher</a>
-                    {% endif %}
-                    {% if (outing.status != "Fermé") and (outing.status != "Passé") and (outing.status != "En cours") %}
-                        {% if app.user.pseudo in outing.members%}
-                            <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
-                        {% else %}
-                            <a href="{{ path('app_outing_subscribe',{ 'id': outing.id }) }}">S'inscrire</a>
+            {% for outing in outings %}
+                <tr>
+                    <td>{{ outing.nameOuting }}</td>
+                    <td>{{ outing.dateHourOuting|date('d/m/Y H:i') }}</td>
+                    <td>{{ outing.dateInscriptionLimit|date('d/m/Y') }}</td>
+                    <td>{{ outing.members|length }}/{{ outing.spotNumber }}</td>
+                    <td>{{ outing.status }}</td>
+                    <td>
+                        {% if app.user.pseudo in outing.members %}
+                            X
                         {% endif %}
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_profil_view', {'string': outing.author}) }}">{{ outing.author }}</a>
+                    </td>
+                    <td>
+                        {% if outing.author == app.user %}
+                            {% if (outing.status != "Passé") %}
+                                <a href="{{ path('app_outing_edit', {'id': outing.id }) }}">Modifier</a>
+                                <a href="{{ path('app_outing_remove', {'id': outing.id}) }}">Supprimer</a>
+                            {% else %}
+                                <a href="{{ path('app_outing_view', {'id': outing.id}) }}">Afficher</a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ path('app_outing_view', {'id': outing.id}) }}">Afficher</a>
+                        {% endif %}
+                        {% if (outing.status != "Fermé") and (outing.status != "Passé") and (outing.status != "En cours") %}
+                            {% if app.user.pseudo in outing.members%}
+                                <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
+                            {% else %}
+                                <a href="{{ path('app_outing_subscribe',{ 'id': outing.id }) }}">S'inscrire</a>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}
