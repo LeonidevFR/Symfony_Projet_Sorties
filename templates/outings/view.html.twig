@@ -12,6 +12,7 @@
     <p>Nombre de places : {{ view.spotNumber }}</p>
     <p>Durée de la sortie : {{ view.duration }} Minutes</p>
     <p>Description : {{ view.description }}</p>
+    <p>limite : {{ dateliimite }}</p>
     {# if date.now() < datesortie THEN Statut = ... elsif ... #}
     {% set now = 'now'|date %}
     {% if now < view.dateHourOuting %}

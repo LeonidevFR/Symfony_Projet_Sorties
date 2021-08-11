@@ -22,7 +22,7 @@
             {% for outing in outings %}
                 <tr>
                     <td>{{ outing.nameOuting }}</td>
-                    <td>{{ outing.dateHourOuting|date('d/m/Y') }}</td>
+                    <td>{{ outing.dateHourOuting|date('d/m/Y H:i') }}</td>
                     <td>{{ outing.dateInscriptionLimit|date('d/m/Y') }}</td>
                     <td>{{ outing.members|length }}/{{ outing.spotNumber }}</td>
                     <td>{{ outing.status }}</td>
@@ -37,16 +37,16 @@
                     <td>
                         {% if outing.author == app.user %}
                             <a href="{{ path('app_outing_edit', {'id': outing.id }) }}">Modifier</a>
-                            {% if outing.status == "En création" %}
-                                <a href="{{ path('') }}"></a>
-                            {% endif %}
+                            <a href="{{ path('app_outing_remove', {'id': outing.id}) }}">Supprimer</a>
                         {% else %}
                             <a href="{{ path('app_outing_view', {'id': outing.id}) }}">Afficher</a>
                         {% endif %}
-                        {% if app.user.pseudo in outing.members%}
-                            <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
-                        {% else %}
-                            <a href="{{ path('app_outing_subscribe',{ 'id': outing.id }) }}">S'inscrire</a>
+                        {% if (outing.status != "Fermé") and (outing.status != "Passé") and (outing.status != "En cours") %}
+                            {% if app.user.pseudo in outing.members%}
+                                <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
+                            {% else %}
+                                <a href="{{ path('app_outing_subscribe',{ 'id': outing.id }) }}">S'inscrire</a>
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>

@@ -41,6 +41,7 @@ class MainController extends AbstractController
             date_default_timezone_set('Europe/Paris');
             $nowstr = date("d/m/Y H:i:s");
             $str_date_outing = date_format($outing->getDateHourOuting(), "d/m/Y H:i:s");
+            $str_date_end_subscription = date_format($outing->getDateInscriptionLimit(), "d/m/Y H:i:s");
             $date_outing = date_create_from_format("d/m/Y H:i:s", $str_date_outing);
             $outing_duration = $outing->getDuration();
             $date_outing_end = date_modify($date_outing, '+'.$outing_duration.'minutes');
@@ -48,13 +49,13 @@ class MainController extends AbstractController
             $spots_taken = count($outing->getMembers());
             $total_spots_number = $outing->getSpotNumber();
 
-            if($str_date_outing > $nowstr && ($spots_taken < $total_spots_number)) {
+            if (($str_date_outing > $nowstr) && ($spots_taken < $total_spots_number) && ($str_date_end_subscription > $nowstr)) {
                 $outing->setStatus($statusRepository->findStatusByName('Ouvert'));
-            } elseif ($str_date_outing > $nowstr && ($spots_taken >= $total_spots_number)) {
+            } elseif ((($str_date_outing > $nowstr) && ($spots_taken >= $total_spots_number))) {
                 $outing->setStatus($statusRepository->findStatusByName('Fermé'));
             } elseif ($str_date_outing < $nowstr && $outing_end_str > $nowstr) {
                 $outing->setStatus($statusRepository->findStatusByName('En cours'));
-            } elseif($str_date_outing < $nowstr) {
+            } elseif ($str_date_outing < $nowstr) {
                 $outing->setStatus($statusRepository->findStatusByName('Passé'));
             }
             $em = $this->getDoctrine()->getManager();
@@ -66,6 +67,14 @@ class MainController extends AbstractController
             'form' => $form->createView(),
             'outings' => $all_outings
         ]);
+    }
+
+    /**
+     * @Route("/nope", name="app_you_shall_not_pass")
+     */
+    public function youshallnotpass()
+    {
+        return $this->render('outings/youshallnotpass.html.twig');
     }
 
 }

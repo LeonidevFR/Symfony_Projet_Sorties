@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\City;
 use App\Entity\Outings;
 use App\Form\OutingsFormType;
+use App\Repository\OutingsRepository;
 use App\Repository\StatusRepository;
 use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,26 +26,6 @@ class OutingController extends AbstractController
     {
         $view = $this->getDoctrine()->getRepository(Outings::class)->find($id);
 
-
-        date_default_timezone_set('Europe/Paris');
-        $nowstr = date("d/m/Y H:i:s");
-        $str_date_outing = date_format($view->getDateHourOuting(), "d/m/Y H:i:s");
-        $date_outing = date_create_from_format("d/m/Y H:i:s", $str_date_outing);
-        $outing_duration = $view->getDuration();
-        $date_outing_end = date_modify($date_outing, '+' . $outing_duration . 'minutes');
-        $outing_end_str = date_format($date_outing_end, "d/m/Y H:i:s");
-        $spots_taken = count($view->getMembers());
-        $total_spots_number = $view->getSpotNumber();
-
-        if ($str_date_outing > $nowstr && ($spots_taken < $total_spots_number)) {
-            $view->setStatus($statusRepository->findStatusByName('Ouvert'));
-        } elseif ($str_date_outing > $nowstr && ($spots_taken >= $total_spots_number)) {
-            $view->setStatus($statusRepository->findStatusByName('Fermé'));
-        } elseif ($str_date_outing < $nowstr && $outing_end_str > $nowstr) {
-            $view->setStatus($statusRepository->findStatusByName('En cours'));
-        } elseif ($str_date_outing < $nowstr) {
-            $view->setStatus($statusRepository->findStatusByName('Passé'));
-        }
         if(!$view){
             throw $this->createNotFoundException('Aucune sortie ne correspond a l\'ID'.$id);
         }
@@ -52,6 +33,7 @@ class OutingController extends AbstractController
         date_default_timezone_set('Europe/Paris');
         $nowstr = date("d/m/Y H:i:s");
         $str_date_outing = date_format($view->getDateHourOuting(), "d/m/Y H:i:s");
+        $str_date_end_subscription = date_format($view->getDateInscriptionLimit(), "d/m/Y H:i:s");
         $date_outing = date_create_from_format("d/m/Y H:i:s", $str_date_outing);
         $outing_duration = $view->getDuration();
         $date_outing_end = date_modify($date_outing, '+' . $outing_duration . 'minutes');
@@ -59,9 +41,9 @@ class OutingController extends AbstractController
         $spots_taken = count($view->getMembers());
         $total_spots_number = $view->getSpotNumber();
 
-        if ($str_date_outing > $nowstr && ($spots_taken < $total_spots_number)) {
+        if (($str_date_outing > $nowstr) && ($spots_taken < $total_spots_number) && ($str_date_end_subscription > $nowstr)) {
             $view->setStatus($statusRepository->findStatusByName('Ouvert'));
-        } elseif ($str_date_outing > $nowstr && ($spots_taken >= $total_spots_number)) {
+        } elseif ((($str_date_outing > $nowstr) && ($spots_taken >= $total_spots_number)) || ($str_date_end_subscription < $nowstr)) {
             $view->setStatus($statusRepository->findStatusByName('Fermé'));
         } elseif ($str_date_outing < $nowstr && $outing_end_str > $nowstr) {
             $view->setStatus($statusRepository->findStatusByName('En cours'));
@@ -72,6 +54,7 @@ class OutingController extends AbstractController
         return $this->render('outings/view.html.twig', [
             'controller_name' => 'OutingController',
             'view' => $view,
+            'dateliimite' => $str_date_end_subscription
 
         ]);
     }
@@ -79,7 +62,7 @@ class OutingController extends AbstractController
     /**
      * @Route("/create", name="_create")
      */
-    public function createOuting(Request $request): Response
+    public function createOuting(Request $request, StatusRepository $statusRepository): Response
     {
         $outing = new Outings();
         $outingForm = $this->createForm(OutingsFormType::class, $outing);
@@ -88,7 +71,6 @@ class OutingController extends AbstractController
 
         if ($outingForm->isSubmitted()) {
             $city = new City();
-
             $city->setName($request->get('ville'))
                 ->setCodePostal($request->get('codePostal'));
             $em = $this->getDoctrine()
@@ -98,12 +80,13 @@ class OutingController extends AbstractController
                 ->findOneBy(
                     ['codePostal' => $city->getCodePostal()]
                 );
-            $outing->setAuthor($this->getUser());
             if (!$query) {
                 $em->persist($city);
                 $outing->setCity($city);
             } else
                 $outing->setCity($query);
+            $outing->setAuthor($this->getUser());
+            $outing->setStatus($statusRepository->findStatusByName('En création'));
             $em->persist($outing);
             $em->flush();
             return new Response('Sortie bien enregistré.');
@@ -121,33 +104,34 @@ class OutingController extends AbstractController
      */
     public function edit(Request $request, Outings $outing)
     {
+        if($this->getUser() != $outing->getAuthor()) {
+            return $this->redirectToRoute('app_you_shall_not_pass');
+        } elseif ($this->getUser() == $outing->getAuthor()) {
 
-        $outingForm = $this->createForm(OutingsFormType::class, $outing);
+            $outingForm = $this->createForm(OutingsFormType::class, $outing);
+            $outingForm->handleRequest($request);
 
-        $outingForm->handleRequest($request);
+            if ($outingForm->isSubmitted()) {
+                $city = new City();
+                $city->setName($request->get('ville'))
+                    ->setCodePostal($request->get('codePostal'));
+                $em = $this->getDoctrine()
+                    ->getManager();
+                $query = $this->getDoctrine()
+                    ->getRepository(City::class)
+                    ->findOneBy(
+                        ['codePostal' => $city->getCodePostal()]
+                    );
 
-        if ($outingForm->isSubmitted()) {
-            $city = new City();
-            $city->setName($request->get('ville'))
-                ->setCodePostal($request->get('codePostal'));
-            $em = $this->getDoctrine()
-                ->getManager();
-            $query = $this->getDoctrine()
-                ->getRepository(City::class)
-                ->findOneBy(
-                    ['codePostal' => $city->getCodePostal()]
-                );
-
-            $outing->setAuthor($this->getUser());
-
-            if (!$query) {
-                $em->persist($city);
-                $outing->setCity($city);
-            } else
-                $outing->setCity($query);
-            $em->flush();
-
+                if (!$query) {
+                    $em->persist($city);
+                    $outing->setCity($city);
+                } else
+                    $outing->setCity($query);
+                $em->flush();
+            }
         }
+
         return $this->render('outings/edit.html.twig', [
             'outingForm' => $outingForm->createView()
         ]);
@@ -200,6 +184,22 @@ class OutingController extends AbstractController
         $em->flush();
 
         return $this->redirectToRoute('app_main_home');
+    }
+
+    /**
+     * @Route("/remove/{id}", name="_remove",
+     *     requirements={"id": "\d+"})
+     */
+    public function remove(Outings $outing)
+    {
+        if($this->getUser() != $outing->getAuthor()) {
+            return $this->redirectToRoute('app_you_shall_not_pass');
+        } elseif ($this->getUser() == $outing->getAuthor()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($outing);
+            $em->flush();
+            return $this->redirectToRoute('app_main_home');
+        }
     }
 
 }
