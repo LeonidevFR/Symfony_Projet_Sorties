@@ -41,10 +41,12 @@
                     </td>
                     <td>
                         {% if outing.status != "Passé" and outing.status != "En création" and outing.status != "En cours" and (outing.author == app.user or is_granted("ROLE_ADMIN")) %}
+                            <a href="{{ path('app_outing_view', {'id': outing.id}) }}">Afficher</a>
                             <a href="{{ path('app_outing_edit', {'id': outing.id}) }}">Modifier</a>
                             <a href="{{ path('app_outing_remove', {'id': outing.id}) }}">Supprimer</a>
                         {% elseif outing.status == "En création" and (outing.author == app.user) %}
                             <a href="{{ path('app_outing_publish', {'id': outing.id}) }}">Publier</a>
+                            <a href="{{ path('app_outing_view', {'id': outing.id}) }}">Afficher</a>
                             <a href="{{ path('app_outing_edit', {'id': outing.id }) }}">Modifier</a>
                             <a href="{{ path('app_outing_remove', {'id': outing.id}) }}">Supprimer</a>
                         {% else %}

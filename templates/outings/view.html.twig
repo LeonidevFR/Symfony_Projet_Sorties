@@ -28,6 +28,13 @@
     </div>
 </div>
 
+    {% if status == "En création" and outing.author == app.user and is_granted("ROLE_ADMIN") %}
+        <a href="{{ path('app_outing_publish', {'id': outing.id}) }}">Publier</a>
+    {% elseif status == "Ouvert" and outing.author == app.user is_granted("ROLE_ADMIN") %}
+        <a href="{{ path('app_outing_edit', {'id': outing.id}) }}">Modifier</a>
+    {% endif %}
+
+
 <div class="container">
     <table class="table table-bordered col-4">
         <thead>

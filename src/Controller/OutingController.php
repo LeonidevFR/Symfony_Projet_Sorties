@@ -58,7 +58,9 @@ class OutingController extends AbstractController
         return $this->render('outings/view.html.twig', [
             'controller_name' => 'OutingController',
             'view' => $view,
-            'dateliimite' => $str_date_end_subscription
+            'dateliimite' => $str_date_end_subscription,
+            'status' => $view->getStatus(),
+            'outing' => $view
 
         ]);
     }
@@ -155,7 +157,9 @@ class OutingController extends AbstractController
         return $this->render('outings/edit.html.twig', [
             'outingForm' => $outingForm->createView(),
             'cityName' => $oldcity->getName(),
-            'zipCode' => $oldcity->getCodePostal()
+            'zipCode' => $oldcity->getCodePostal(),
+            'status' => $outing->getStatus(),
+            'outing' => $outing
         ]);
     }
 
