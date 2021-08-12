@@ -54,7 +54,13 @@ class OutingController extends AbstractController
         } elseif ($str_date_outing < $nowstr) {
             $view->setStatus($statusRepository->findStatusByName('Passé'));
         }
-
+        $user = $this->getUser();
+        $userMember = false;
+        foreach ($view->getMembers() as $member){
+            dump($member);
+            if($member == $this->getUser())
+                $userMember = true;
+        }
         return $this->render('outings/view.html.twig', [
             'controller_name' => 'OutingController',
             'view' => $view,
@@ -99,7 +105,8 @@ class OutingController extends AbstractController
                 $outing->setStatus($statusRepository->findStatusByName('En création'));
                 $em->persist($outing);
                 $em->flush();
-                return new Response('Sortie bien enregistré.');
+                $this->addFlash('success', ('Sortie bien enregistré.'));
+                return $this->redirectToRoute('app_outing_view',['id' => $outing->getId()]);
             }
         }
         return $this->render('outings/outings.html.twig', [

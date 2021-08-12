@@ -65,8 +65,8 @@ class OutingsRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('o')
             ->leftJoin('o.members', 'm')
             ->leftJoin('o.campus', 'c')
-            ->leftJoin('o.status', 's');
-
+            ->leftJoin('o.status', 's')
+            ->orderBy('o.id','DESC');
         if(null != $campus){
             $qb->andWhere('c = :campus')
                 ->setParameter('campus', $campus);
@@ -87,11 +87,12 @@ class OutingsRepository extends ServiceEntityRepository
             $qb->andWhere('o.author = :self')
                 ->setParameter('self', $self);
         if(null != $isRegistered || null != $isUnregistered) {
-            if(null != $isRegistered) {
+            if(null != $isRegistered && null == $isUnregistered) {
                 $qb->andWhere('m = :self')
                     ->setParameter('self', $self);
-            } else {
+            } else if(null != $isUnregistered && null == $isRegistered){
                 $qb->andWhere('m != :self')
+                    ->orWhere('m IS NULL')
                     ->setParameter('self', $self);
             }
         }
