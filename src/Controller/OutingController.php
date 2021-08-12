@@ -54,7 +54,6 @@ class OutingController extends AbstractController
         } elseif ($str_date_outing < $nowstr) {
             $view->setStatus($statusRepository->findStatusByName('Passé'));
         }
-        $user = $this->getUser();
         $userMember = false;
         foreach ($view->getMembers() as $member){
             dump($member);
@@ -65,9 +64,9 @@ class OutingController extends AbstractController
             'controller_name' => 'OutingController',
             'view' => $view,
             'dateliimite' => $str_date_end_subscription,
+            'userMember' => $userMember,
             'status' => $view->getStatus(),
             'outing' => $view
-
         ]);
     }
 
