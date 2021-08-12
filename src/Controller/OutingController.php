@@ -32,7 +32,6 @@ class OutingController extends AbstractController
             throw $this->createNotFoundException('Aucune sortie ne correspond a l\'ID'.$id);
         }
 
-        date_default_timezone_set('Europe/Paris');
         $nowstr = date("d/m/Y H:i:s");
         $str_date_outing = date_format($view->getDateHourOuting(), "d/m/Y H:i:s");
         $str_date_end_subscription = date_format($view->getDateInscriptionLimit(), "d/m/Y H:i:s");
@@ -118,8 +117,10 @@ class OutingController extends AbstractController
         }
         dump($admin);
         if(!$admin && $user != $outing->getAuthor()) {
-            $request->getSession()->getFlashBag()->add('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
-            return new RedirectResponse('http://localhost/Symfony_Projet_Sorties/public/');
+            //$request->getSession()->getFlashBag()->add('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
+            $this->addFlash('access_denied', "Vous n'avez pas les permissions pour accèder à cette page.");
+            //return new RedirectResponse('http://localhost/CloneProjetSorties/public/');
+            return $this->redirectToRoute('app_main_home');
         } else {
             $oldcity = $outing->getCity();
             $oldcity->getName();
@@ -218,7 +219,8 @@ class OutingController extends AbstractController
         }
         if($this->getUser() != $outing->getAuthor() && !$admin) {
             $request->getSession()->getFlashBag()->add('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
-            return new RedirectResponse('http://localhost/Symfony_Projet_Sorties/public/');
+            //return new RedirectResponse('http://localhost/CloneProjetSorties/public/');
+            return $this->redirectToRoute('app_main_home');
         } elseif ($this->getUser() == $outing->getAuthor()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($outing);

@@ -38,7 +38,9 @@ class Outings
     /**
      * @ORM\Column(type="date")
      * @Assert\NotBlank()
-     * @Assert\LessThan("tomorrow")
+     * @Assert\Expression(
+     *     "this.getDateInscriptionLimit() < this.getDateHourOuting()"
+     * )
      */
     private $dateInscriptionLimit;
 

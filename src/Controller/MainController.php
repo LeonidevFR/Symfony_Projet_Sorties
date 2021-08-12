@@ -61,7 +61,6 @@ class MainController extends AbstractController
         }
 
         foreach ($results as $outing) {
-            date_default_timezone_set('Europe/Paris');
             $nowstr = date("d/m/Y H:i:s");
             $str_date_outing = date_format($outing->getDateHourOuting(), "d/m/Y H:i:s");
             $str_date_end_subscription = date_format($outing->getDateInscriptionLimit(), "d/m/Y H:i:s");
