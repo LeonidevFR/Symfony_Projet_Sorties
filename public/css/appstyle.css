@@ -1,3 +1,10 @@
+html h1{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 .flex {
     display: flex;
     justify-content: space-between;
@@ -20,20 +27,40 @@
 }
 
 #form_search {
-    max-width: 640px;
+    max-width: 600px;
     margin: auto;
+    padding: 3rem;
+    border: 2px solid #e7e7e7;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 
+#form_search #form_flex {
+    display: flex;
+}
+
+#form_flex .margin_label {
+    margin-left: 5px;
 }
 
 .center-btn {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
 
 .center-btn button {
     font-size: 1.2em;
     width: auto;
     margin: 0px 10px;
+}
+
+.center-btn a {
+    color: white;
+}
+
+.center-btn a:hover {
+    color: white;
 }
 
 .flex a {
@@ -50,8 +77,9 @@ label {
 }
 
 .margin-left {
-    margin-left: 200px;
-    font-weight: 600
+    float: left;
+    font-weight: 600;
+    margin-left: 40px;
 }
 
 .flash-success {

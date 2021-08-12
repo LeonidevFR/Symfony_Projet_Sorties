@@ -5,16 +5,17 @@
 {% block body %}
     <h1>S'enregistrer</h1>
 
+
+    <div id="form_search">
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.pseudo) }}
         {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Mot de Passe'
-        }) }}
+        {{ form_row(registrationForm.plainPassword) }}
         {{ form_row(registrationForm.firstName) }}
         {{ form_row(registrationForm.lastName) }}
         {{ form_row(registrationForm.phoneNumber) }}
         {{ form_row(registrationForm.agreeTerms) }}
-        <button type="submit" class="btn">Envoyer</button>
+        <button type="submit" class="btn btn-dark">S'inscrire</button>
     {{ form_end(registrationForm) }}
+    </div>
 {% endblock %}

@@ -3,6 +3,7 @@
     {{ user.pseudo }}
 {% endblock %}
 {% block body %}
+    <div id="form_search">
     <div class="container">
         <div class="img-fluid d-flex flex-wrap align-items-center">
             <img style="max-width: 200px; height: auto;" class="img-fluid" src="{{ asset('img/userAvatar/' ~ user.avatar) }}" alt="Avatar">
@@ -18,8 +19,9 @@
     </div>
     <div class="center-btn">
         {% if app.user.id == user.id %}
-            <button class="btn btn-outline-dark"><a href="{{ path('app_profil_edit') }}">Modifier</a></button>
+            <button class="btn btn-dark"><a href="{{ path('app_profil_edit') }}">Modifier</a></button>
         {% endif %}
-        <button class="btn btn-outline-dark"><a href="{{ path('app_main_home') }}">Retour</a></button>
+        <button class="btn btn-dark"><a href="{{ path('app_main_home') }}">Retour</a></button>
+    </div>
     </div>
 {% endblock %}

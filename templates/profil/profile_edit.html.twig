@@ -2,9 +2,13 @@
 
 {% block body %}
 
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button type="submit">Valider</button>
-    {{ form_end(form) }}
+<h1>Modifier Profil</h1>
+
+    <div id="form_search">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-dark">Valider</button>
+        {{ form_end(form) }}
+    </div>
 
 {% endblock %}

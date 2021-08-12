@@ -2,9 +2,17 @@
 
 {% block body %}
 
-    <div id="form_search">
+    <div id="form_search" class="sketchy">
         {{ form_start(form) }}
-
+            {{ form_row(form.campus) }}
+            {{ form_row(form.nameContains) }}
+            <div id="form_flex">{{ form_row(form.dateStart) }}
+            {{ form_row(form.dateEnd) }}</div>
+            {{ form_row(form.choiceAuthor) }}
+            {{ form_row(form.choiceFinished) }}
+            {{ form_row(form.choiceRegistered) }}
+            {{ form_row(form.choiceNotRegistered) }}
+            {{ form_row(form.submit) }}
         {{ form_end(form) }}
     </div>
 
@@ -65,7 +73,7 @@
             </tbody>
         </table>
         </div>
-        <div style="margin: auto; width: 20%;">
+        <div style="margin: auto; width: 20%; font-size: 30px;">
             <p>{{ knp_pagination_render(outings) }}</p>
         </div>
     </div>
