@@ -105,3 +105,11 @@ label {
     text-align: center;
     height: 40px;
 }
+
+.flash-warning {
+    background-color: #e7c724;
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+    height: 40px;
+}
