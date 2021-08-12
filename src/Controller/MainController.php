@@ -51,11 +51,6 @@ class MainController extends AbstractController
             } else {
                 $isFinished = null;
             }
-            /*dump($isAuthor);
-            dump($isRegistered);
-            dump($isUnregistered);
-            dump($isFinished);
-            dd($datas);*/
             $results = $repositoryOutings->findByParameters($user,$campus,$contains,$dateDebut,$dateFin, $isAuthor, $isRegistered, $isUnregistered, $isFinished);
         } else {
             $results = $this->getDoctrine()->getRepository(Outings::class)->findBy([],['id' => 'DESC']);

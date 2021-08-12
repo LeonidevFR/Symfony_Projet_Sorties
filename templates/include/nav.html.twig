@@ -13,14 +13,14 @@
                 <a class="nav-link" href="{{ path('app_profil_view', {'string': app.user.pseudo}) }}">Profil</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_outing_create', {'string': app.user.pseudo}) }}">Créer Sortie</a>
+                <a class="nav-link" href="{{ path('app_outing_create', {'string': app.user.pseudo}) }}">Créer une sortie</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_logout') }}" title="Se déconnecter">Déconnexion</a>
             </li>
                 {% if is_granted("ROLE_ADMIN") %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_admin') }}" title="Panneau Admin">Admin Panel</a>
+                    <a class="nav-link" href="{{ path('app_admin') }}" title="Panneau Admin">Panneau d'admin</a>
                 </li>
                 {% endif %}
                     {% else %}

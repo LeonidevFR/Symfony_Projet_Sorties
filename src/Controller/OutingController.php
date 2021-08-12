@@ -4,13 +4,8 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\Outings;
-use App\Entity\Status;
-use App\Entity\User;
 use App\Form\OutingsFormType;
-use App\Repository\OutingsRepository;
 use App\Repository\StatusRepository;
-use phpDocumentor\Reflection\Types\String_;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,7 +52,6 @@ class OutingController extends AbstractController
         $user = $this->getUser();
         $userMember = false;
         foreach ($view->getMembers() as $member){
-            dump($member);
             if($member == $this->getUser())
                 $userMember = true;
         }
@@ -133,11 +127,9 @@ class OutingController extends AbstractController
         $user = $this->getUser();
         $admin = false;
         foreach ($user->getRoles() as $role){
-            dump($role);
             if($role == "ROLE_ADMIN")
                 $admin = true;
         }
-        dump($admin);
         if((!$admin && $user != $outing->getAuthor()) || (!$admin && $outing->getStatus() == "Passé")) {
             //$request->getSession()->getFlashBag()->add('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
             $this->addFlash('access_denied', "Vous n'avez pas les permissions pour accèder à cette page.");
@@ -250,7 +242,6 @@ class OutingController extends AbstractController
         $user = $this->getUser();
         $admin = false;
         foreach ($user->getRoles() as $role){
-            dump($role);
             if($role == "ROLE_ADMIN")
                 $admin = true;
         }
@@ -274,7 +265,6 @@ class OutingController extends AbstractController
         $user = $this->getUser();
         $admin = false;
         foreach ($user->getRoles() as $role){
-            dump($role);
             if($role == "ROLE_ADMIN")
                 $admin = true;
         }
