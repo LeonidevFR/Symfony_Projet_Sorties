@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %} ENI Sorties {% endblock %}</title>
-        <link rel="stylesheet" href="{% block stylesheets %}{{ asset('css/appstyle.css') }}{% endblock %}">
+        {% block stylesheets %}<link rel="stylesheet" type="text/css" href="{{ asset('css/appstyle.css') }}{% endblock %}">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway&display=swap">
         <script>{% block javascripts %}{% endblock %}</script>
