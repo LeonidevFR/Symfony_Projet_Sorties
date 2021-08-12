@@ -287,6 +287,7 @@ class OutingController extends AbstractController
         }
         if($this->getUser() != $outing->getAuthor() && !$admin) {
             $this->addFlash('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
+            return $this->redirectToRoute('app_main_home');
             //return new RedirectResponse('http://localhost/CloneProjetSorties/public/');
         } else {
             if($outing->getStatus()->getWording() != "En création" || $outing->getStatus()->getWording() != "Ouvert"){
