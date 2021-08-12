@@ -196,7 +196,10 @@ class OutingController extends AbstractController
     {
         $SortieRepository = $this->getDoctrine()->getRepository(Outings::class);
         $sortie = $SortieRepository->find($id);
-
+        if($sortie->getStatus()->getWording() != "Ouvert"){
+            $this->addFlash('warning', "Vous ne pouvez pas vous inscrire à cette sortie.");
+            return $this->redirectToRoute('app_main_home');
+        }
         // on inscrit l'utilisateur que si le quotas le permet
         if(count($sortie->getMembers()) < $sortie->getSpotNumber())
         {
@@ -227,6 +230,10 @@ class OutingController extends AbstractController
             $this->addFlash('danger', "Cette sortie n'existe pas !");
             return $this->redirectToRoute('app_main_home');
         }
+        if($sortie->getStatus()->getWording() != "Ouvert"){
+            $this->addFlash('warning', "Vous ne pouvez pas vous désistez de cette sortie.");
+            return $this->redirectToRoute('app_main_home');
+        }
 
         // supprime l'utilisateur de la liste des participants
         $sortie->removeMember($this->getUser());
@@ -254,10 +261,14 @@ class OutingController extends AbstractController
             return $this->redirectToRoute('app_main_home');
         } else {
             $em = $this->getDoctrine()->getManager();
+            if($outing->getStatus()->getWording() != "En création"){
+                $this->addFlash('warning', "Vous ne pouvez pas publier cette sortie.");
+                return $this->redirectToRoute('app_main_home');
+            }
             $outing->setStatus($statusRepository->findStatusByName('Ouvert'));
             $em->persist($outing);
             $em->flush();
-            $this->addFlash('success_outing', "Vous avez publié votre sortie !");
+            $this->addFlash('success_outing', "Vous avez publié cette sortie !");
         }
         return $this->redirectToRoute('app_main_home');
     }
@@ -276,8 +287,13 @@ class OutingController extends AbstractController
         }
         if($this->getUser() != $outing->getAuthor() && !$admin) {
             $this->addFlash('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
+            return $this->redirectToRoute('app_main_home');
             //return new RedirectResponse('http://localhost/CloneProjetSorties/public/');
         } else {
+            if($outing->getStatus()->getWording() != "En création" || $outing->getStatus()->getWording() != "Ouvert"){
+                $this->addFlash('warning', "Vous ne pouvez pas annuler cette sortie.");
+                return $this->redirectToRoute('app_main_home');
+            }
             $outing->setStatus($statusRepository->findStatusByName('Annulé'));
             $em = $this->getDoctrine()->getManager();
             $em->persist($outing);
