@@ -15,7 +15,7 @@
                     <div class="date p-2"><strong>{{form_row(outingForm.dateInscriptionLimit)}}</strong></div>
                     <div class="p-2"><strong>{{ form_row(outingForm.spotNumber) }}</strong></div>
                     <div class="p-2"><strong>{{ form_row(outingForm.duration, {'attr': {'placeholder': 'en minutes.'}}) }}</strong></div>
-                    <div class="p-2"><strong>{{ form_label(outingForm.description) }}</strong></div>
+                    <div id="form_flex"><div class="p-2"><strong>{{ form_label(outingForm.description) }}</strong></div>
                     <div class="p-2" style="vertical-align:top;"><strong>{{ form_widget(outingForm.description) }}</strong></div>
                     <div class="p-2"><strong>{{ form_row(outingForm.Campus) }}</strong></div>
                 </div>
@@ -47,7 +47,7 @@
             </div>
             <button class="btn btn-dark">Envoyer</button>
             {% if status == "En création" %}
-                <a href="{{ path('app_outing_publish', {'id': outing.id}) }}"><button>Publier</button></a>
+                <a href="{{ path('app_outing_publish', {'id': outing.id}) }}"><button class="btn btn-dark">Publier</button></a>
             {% endif %}
                 <a href="{{ path('app_outing_cancel', {'id': outing.id}) }}"><button class="btn btn-dark">Annuler</button></a>
             </div>

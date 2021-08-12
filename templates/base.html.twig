@@ -9,6 +9,11 @@
         <script>{% block javascripts %}{% endblock %}</script>
     </head>
     <body>
+    <header>
+        {% block header %}
+            {% include 'include/nav.html.twig' %}
+        {% endblock %}
+    </header>
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="flash flash-{{ label }}">
@@ -16,11 +21,6 @@
             </div>
         {% endfor %}
     {% endfor %}
-    <header>
-        {% block header %}
-            {% include 'include/nav.html.twig' %}
-        {% endblock %}
-    </header>
     <main>
         {% block body %}
 
