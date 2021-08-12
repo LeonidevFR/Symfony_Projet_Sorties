@@ -8,6 +8,7 @@
         {{ form_start(form) }}
         {{ form_widget(form) }}
         <button type="submit" class="btn btn-dark">Valider</button>
+    <button class="btn btn-dark"><span class="profil_link_return"><a href="{{ path('app_profil_view', {'string': app.user.pseudo}) }}">Retour</a></span></button>
         {{ form_end(form) }}
     </div>
 

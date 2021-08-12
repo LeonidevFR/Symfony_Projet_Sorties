@@ -4,13 +4,7 @@
 
 {% block body %}
 
-<div class="container-fluid pt-3">
-        <div class="row">
-            <div class="col">
                 <h2>Modifier une sortie</h2>
-                <hr>
-            </div>
-        </div>
 
         {{ form_start(outingForm) }}
          <div class="row justify-content-center">
@@ -48,7 +42,7 @@
                 {% if status == "En création" %}
                       <a href="{{ path('app_outing_publish', {'id': outing.id}) }}"><button>Publier</button></a>
                 {% endif %}
-
+            {{ form_end(outingForm) }}
             </div>
         </div>
 

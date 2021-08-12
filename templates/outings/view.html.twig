@@ -3,11 +3,11 @@
 {% block title %}OutingViewController{% endblock %}
 
 {% block body %}
-
+    <h1>Afficher une Sortie</h1>
 <div class="container">
     <div class="row">
         <div class="col">
-            <h1>Afficher une Sortie</h1>
+
             <p>Nom de la Sortie : {{ view.nameOuting }}</p>
             <p>Date et heure de la sortie : {{ view.dateHourOuting|format_datetime(locale='fr') }}</p>
             <p>Date limite d'inscription : {{ view.dateInscriptionLimit|format_date(locale='fr') }}</p>

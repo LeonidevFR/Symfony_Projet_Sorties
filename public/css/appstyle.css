@@ -63,6 +63,14 @@ html h1{
     color: white;
 }
 
+.profil_link_return a {
+    color: white;
+}
+
+.profil_link_return a:hover {
+    color: white;
+}
+
 .flex a {
     margin : 0px 10px;
     font-size: 1.4em;
