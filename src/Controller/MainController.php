@@ -71,7 +71,9 @@ class MainController extends AbstractController
             $spots_taken = count($outing->getMembers());
             $total_spots_number = $outing->getSpotNumber();
 
-            if (($str_date_outing > $nowstr) && ($spots_taken < $total_spots_number) && ($str_date_end_subscription > $nowstr)) {
+            if ($outing->getStatus($statusRepository->findStatusByName('En création'))) {
+                $outing->getStatus($statusRepository->findStatusByName('En création'));
+            } elseif(($str_date_outing > $nowstr) && ($spots_taken < $total_spots_number) && ($str_date_end_subscription > $nowstr)) {
                 $outing->setStatus($statusRepository->findStatusByName('Ouvert'));
             } elseif ((($str_date_outing > $nowstr) && ($spots_taken >= $total_spots_number))) {
                 $outing->setStatus($statusRepository->findStatusByName('Fermé'));

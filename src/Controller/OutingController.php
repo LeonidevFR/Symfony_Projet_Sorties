@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\Outings;
+use App\Entity\Status;
 use App\Entity\User;
 use App\Form\OutingsFormType;
 use App\Repository\OutingsRepository;
@@ -42,9 +43,11 @@ class OutingController extends AbstractController
         $spots_taken = count($view->getMembers());
         $total_spots_number = $view->getSpotNumber();
 
-        if (($str_date_outing > $nowstr) && ($spots_taken < $total_spots_number) && ($str_date_end_subscription > $nowstr)) {
+        if ($view->getStatus($statusRepository->findStatusByName('En création'))) {
+            $view->getStatus($statusRepository->findStatusByName('En création'));
+        } elseif(($str_date_outing > $nowstr) && ($spots_taken < $total_spots_number) && ($str_date_end_subscription > $nowstr)) {
             $view->setStatus($statusRepository->findStatusByName('Ouvert'));
-        } elseif ((($str_date_outing > $nowstr) && ($spots_taken >= $total_spots_number)) || ($str_date_end_subscription < $nowstr)) {
+        } elseif ((($str_date_outing > $nowstr) && ($spots_taken >= $total_spots_number))) {
             $view->setStatus($statusRepository->findStatusByName('Fermé'));
         } elseif ($str_date_outing < $nowstr && $outing_end_str > $nowstr) {
             $view->setStatus($statusRepository->findStatusByName('En cours'));
@@ -91,6 +94,7 @@ class OutingController extends AbstractController
                     $outing->setCity($query);
 
                 $outing->setAuthor($this->getUser());
+                $outing->setStatus($statusRepository->findStatusByName('En création'));
                 $em->persist($outing);
                 $em->flush();
                 return new Response('Sortie bien enregistré.');
@@ -208,7 +212,7 @@ class OutingController extends AbstractController
      * @Route("/remove/{id}", name="_remove",
      *     requirements={"id": "\d+"})
      */
-    public function remove(Request $request, Outings $outing)
+    public function remove(Outings $outing)
     {
         $user = $this->getUser();
         $admin = false;
@@ -218,12 +222,38 @@ class OutingController extends AbstractController
                 $admin = true;
         }
         if($this->getUser() != $outing->getAuthor() && !$admin) {
-            $request->getSession()->getFlashBag()->add('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
+            $this->addFlash('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
             //return new RedirectResponse('http://localhost/CloneProjetSorties/public/');
         } else {
             $em = $this->getDoctrine()->getManager();
             $em->remove($outing);
             $em->flush();
+        }
+        return $this->redirectToRoute('app_main_home');
+    }
+
+    /**
+     * @Route("/publish/{id}", name="_publish",
+     *     requirements={"id": "\d+"})
+     */
+    public function publish(Outings $outing, StatusRepository $statusRepository)
+    {
+        $user = $this->getUser();
+        $admin = false;
+        foreach ($user->getRoles() as $role){
+            dump($role);
+            if($role == "ROLE_ADMIN")
+                $admin = true;
+        }
+        if($this->getUser() != $outing->getAuthor() && !$admin) {
+            $this->addFlash('access_denied', "Vous n\'avez pas les permissions pour accèder à cette page.");
+            return $this->redirectToRoute('app_main_home');
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $outing->setStatus($statusRepository->findStatusByName('Ouvert'));
+            $em->persist($outing);
+            $em->flush();
+            $this->addFlash('success_outing', "Vous avez publié votre sortie !");
         }
         return $this->redirectToRoute('app_main_home');
     }
