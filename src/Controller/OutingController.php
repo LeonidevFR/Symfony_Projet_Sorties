@@ -122,6 +122,7 @@ class OutingController extends AbstractController
             return new RedirectResponse('http://localhost/Symfony_Projet_Sorties/public/');
         } else {
             $oldcity = $outing->getCity();
+            $oldcity->getName();
             $outing->setCity($oldcity);
             $outingForm = $this->createForm(OutingsFormType::class, $outing);
             $outingForm->handleRequest($request);
@@ -147,7 +148,9 @@ class OutingController extends AbstractController
         }
 
         return $this->render('outings/edit.html.twig', [
-            'outingForm' => $outingForm->createView()
+            'outingForm' => $outingForm->createView(),
+            'cityName' => $oldcity->getName(),
+            'zipCode' => $oldcity->getCodePostal()
         ]);
     }
 
