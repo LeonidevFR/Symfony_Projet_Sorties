@@ -19,7 +19,6 @@
                     <div class="p-2" style="vertical-align:top;"><strong>{{ form_widget(outingForm.description) }}</strong></div>
                     <div class="p-2"><strong>{{ form_row(outingForm.Campus) }}</strong></div>
                 </div>
-
             <div class="d-flex flex-column">
                 <div class="form-group">
                     <div class="p-2">
@@ -34,7 +33,6 @@
                         </datalist>
                     </div>
                 </div>
-
                 <div>
                     {% if errorZipCode and errorCity == false %}
                         <ul>
@@ -47,13 +45,10 @@
                     </select></div>
                 </div>
             </div>
-
             <button class="btn btn-dark">Envoyer</button>
-                {% if status == "En création" %}
-                      <a href="{{ path('app_outing_publish', {'id': outing.id}) }}"><button>Publier</button></a>
-                {% endif %}
-                <a href="{{ path('app_outing_cancel', {'id': outing.id}) }}"><button>Annuler</button></a>
-            {{ form_end(outingForm) }}
+            {% if status == "En création" %}
+                  <a href="{{ path('app_outing_publish', {'id': outing.id}) }}"><button>Publier</button></a>
+            {% endif %}
             </div>
         </div>
         {{ form_end(outingForm) }}
