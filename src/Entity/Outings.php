@@ -40,6 +40,7 @@ class Outings
      * @Assert\NotBlank()
      * @Assert\Expression(
      *     "this.getDateInscriptionLimit() < this.getDateHourOuting()"
+     *      message="La date d'inscription doit être antérieur à la date de la sortie."
      * )
      * @Assert\GreaterThan("today")
      */
