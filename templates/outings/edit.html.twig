@@ -52,6 +52,7 @@
                 {% if status == "En création" %}
                       <a href="{{ path('app_outing_publish', {'id': outing.id}) }}"><button>Publier</button></a>
                 {% endif %}
+                <a href="{{ path('app_outing_cancel', {'id': outing.id}) }}"><button>Annuler</button></a>
             {{ form_end(outingForm) }}
             </div>
         </div>

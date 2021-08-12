@@ -4,13 +4,8 @@ namespace App\Controller;
 
 use App\Entity\City;
 use App\Entity\Outings;
-use App\Entity\Status;
-use App\Entity\User;
 use App\Form\OutingsFormType;
-use App\Repository\OutingsRepository;
 use App\Repository\StatusRepository;
-use phpDocumentor\Reflection\Types\String_;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,7 +60,9 @@ class OutingController extends AbstractController
             'controller_name' => 'OutingController',
             'view' => $view,
             'dateliimite' => $str_date_end_subscription,
-            'userMember' => $userMember
+            'userMember' => $userMember,
+            'status' => $view->getStatus(),
+            'outing' => $view
         ]);
     }
 
@@ -189,6 +186,8 @@ class OutingController extends AbstractController
             'zipCode' => $oldcity->getCodePostal(),
             'errorZipCode' => $errorZipCode,
             'errorCity' => $errorCity,
+            'status' => $outing->getStatus(),
+            'outing' => $outing
         ]);
     }
 
@@ -242,30 +241,6 @@ class OutingController extends AbstractController
     }
 
     /**
-     * @Route("/remove/{id}", name="_remove",
-     *     requirements={"id": "\d+"})
-     */
-    public function remove(Outings $outing)
-    {
-        $user = $this->getUser();
-        $admin = false;
-        foreach ($user->getRoles() as $role){
-            dump($role);
-            if($role == "ROLE_ADMIN")
-                $admin = true;
-        }
-        if($this->getUser() != $outing->getAuthor() && !$admin) {
-            $this->addFlash('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
-            //return new RedirectResponse('http://localhost/CloneProjetSorties/public/');
-        } else {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($outing);
-            $em->flush();
-        }
-        return $this->redirectToRoute('app_main_home');
-    }
-
-    /**
      * @Route("/publish/{id}", name="_publish",
      *     requirements={"id": "\d+"})
      */
@@ -287,6 +262,31 @@ class OutingController extends AbstractController
             $em->persist($outing);
             $em->flush();
             $this->addFlash('success_outing', "Vous avez publié votre sortie !");
+        }
+        return $this->redirectToRoute('app_main_home');
+    }
+
+    /**
+     * @Route("/cancel/{id}", name="_cancel",
+     *     requirements={"id": "\d+"})
+     */
+    public function cancel(Outings $outing, StatusRepository $statusRepository)
+    {
+        $user = $this->getUser();
+        $admin = false;
+        foreach ($user->getRoles() as $role){
+            dump($role);
+            if($role == "ROLE_ADMIN")
+                $admin = true;
+        }
+        if($this->getUser() != $outing->getAuthor() && !$admin) {
+            $this->addFlash('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
+            //return new RedirectResponse('http://localhost/CloneProjetSorties/public/');
+        } else {
+            $outing->setStatus($statusRepository->findStatusByName('Annulé'));
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($outing);
+            $em->flush();
         }
         return $this->redirectToRoute('app_main_home');
     }

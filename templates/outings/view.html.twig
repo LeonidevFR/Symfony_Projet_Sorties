@@ -51,8 +51,10 @@
 <div>
     {% if status == "En création" and (outing.author == app.user or is_granted("ROLE_ADMIN")) %}
         <a href="{{ path('app_outing_publish', {'id': outing.id}) }}"><button>Publier</button></a>
+        <a href="{{ path('app_outing_cancel', {'id': outing.id}) }}"><button>Annuler</button></a>
     {% elseif status == "Ouvert" and (outing.author == app.user or is_granted("ROLE_ADMIN")) %}
         <a href="{{ path('app_outing_edit', {'id': outing.id}) }}"><button>Modifier</button></a>
+        <a href="{{ path('app_outing_cancel', {'id': outing.id}) }}"><button>Annuler</button></a>
     {% endif %}
     {% if userMember != true %}
         <a href="{{ path('app_outing_subscribe',{ 'id': view.id }) }}"><button>S'inscrire</button></a>
