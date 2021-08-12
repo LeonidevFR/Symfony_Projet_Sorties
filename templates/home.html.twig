@@ -48,7 +48,7 @@
                         <a href="{{ path('app_profil_view', {'string': outing.author}) }}">{{ outing.author }}</a>
                     </td>
                     <td>
-                        {% if outing.status != "Passé" and outing.status != "En création" and outing.status != "En cours" and (outing.author == app.user or is_granted("ROLE_ADMIN")) %}
+                        {% if outing.status != "Passé" and outing.status != "En création" and outing.status != "Annulé" and outing.status != "En cours" and (outing.author == app.user or is_granted("ROLE_ADMIN")) %}
                             <a href="{{ path('app_outing_edit', {'id': outing.id}) }}">Modifier</a>
                         {% elseif outing.status == "En création" and (outing.author == app.user) %}
                             <a href="{{ path('app_outing_publish', {'id': outing.id}) }}">Publier</a>
@@ -56,7 +56,7 @@
                         {% else %}
                         {% endif %}
                             <a href="{{ path('app_outing_view', {'id': outing.id}) }}">Afficher</a>
-                        {% if (outing.status != "Fermé") and (outing.status != "Passé") and (outing.status != "En cours") and (outing.status != "En création") %}
+                        {% if (outing.status != "Fermé") and (outing.status != "Annulé") and (outing.status != "Passé") and (outing.status != "En cours") and (outing.status != "En création") %}
                             {% if app.user.pseudo in outing.members %}
                                 <a href="{{ path('app_outing_unsubscribe',{ 'id': outing.id }) }}">Se désister</a>
                             {% else %}

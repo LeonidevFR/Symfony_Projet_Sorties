@@ -56,10 +56,12 @@
         <a href="{{ path('app_outing_edit', {'id': outing.id}) }}"><button>Modifier</button></a>
         <a href="{{ path('app_outing_cancel', {'id': outing.id}) }}"><button>Annuler</button></a>
     {% endif %}
-    {% if userMember != true %}
-        <a href="{{ path('app_outing_subscribe',{ 'id': view.id }) }}"><button>S'inscrire</button></a>
-    {% else %}
-        <a href="{{ path('app_outing_unsubscribe',{ 'id': view.id }) }}"><button>Se désinscrire</button></a>
+    {% if status == "Ouvert" %}
+        {% if userMember != true %}
+            <a href="{{ path('app_outing_subscribe',{ 'id': view.id }) }}"><button class="btn btn-dark">S'inscrire</button></a>
+        {% else %}
+            <a href="{{ path('app_outing_unsubscribe',{ 'id': view.id }) }}"><button class="btn btn-dark">Se désinscrire</button></a>
+        {% endif %}
     {% endif %}
 </div>
 {% endblock %}
