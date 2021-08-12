@@ -23,6 +23,11 @@
             <div class="d-flex flex-column">
                 <div class="form-group">
                     <div class="p-2">
+                        {% if errorCity %}
+                            <ul>
+                                <li><strong>La nouvelle ville est invalide.</strong></li>
+                            </ul>
+                        {% endif %}
                         <strong><label for="ville-input">Ville : </label></strong>
                         <input list="ville-select" id="ville-input" type="text" name="ville" value="{{ cityName }}" placeholder="Chercher une ville">
                         <datalist id="ville-select">
@@ -31,6 +36,11 @@
                 </div>
 
                 <div>
+                    {% if errorZipCode and errorCity == false %}
+                        <ul>
+                            <li><strong>Le nouveau code postal est invalide.</strong></li>
+                        </ul>
+                     {% endif %}
                     <div class="p-2"><strong><label for="codePostal-select">Code Postal : </label></strong>
                     <select style="width:200px;" id="codePostal-select" name="codePostal">
                         <option>{{ zipCode }}</option>
@@ -45,7 +55,7 @@
             {{ form_end(outingForm) }}
             </div>
         </div>
-
+        {{ form_end(outingForm) }}
 {% endblock %}
 
 {% block endPageScript %}

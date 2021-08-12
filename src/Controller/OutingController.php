@@ -54,6 +54,7 @@ class OutingController extends AbstractController
         } elseif ($str_date_outing < $nowstr) {
             $view->setStatus($statusRepository->findStatusByName('Passé'));
         }
+        $user = $this->getUser();
         $userMember = false;
         foreach ($view->getMembers() as $member){
             dump($member);
@@ -64,9 +65,7 @@ class OutingController extends AbstractController
             'controller_name' => 'OutingController',
             'view' => $view,
             'dateliimite' => $str_date_end_subscription,
-            'userMember' => $userMember,
-            'status' => $view->getStatus(),
-            'outing' => $view
+            'userMember' => $userMember
         ]);
     }
 
@@ -79,11 +78,19 @@ class OutingController extends AbstractController
         $outingForm = $this->createForm(OutingsFormType::class, $outing);
         $cityName = "";
         $zipCode = "";
+        $errorCity = false;
+        $errorZipCode = false;
         $outingForm->handleRequest($request);
         if($outingForm->isSubmitted()) {
             $cityName = $request->get('ville');
             $zipCode = $request->get('codePostal');
-            if ($outingForm->isValid()) {
+            if(strlen($cityName) <= 1) {
+                $errorCity = true;
+            }
+            if(strlen($zipCode) != 5) {
+                $errorZipCode = true;
+            }
+            if ($outingForm->isValid() && !$errorCity && !$errorZipCode) {
                 $city = new City();
                 $city->setName($cityName)
                     ->setCodePostal($zipCode);
@@ -111,7 +118,9 @@ class OutingController extends AbstractController
         return $this->render('outings/outings.html.twig', [
             'outingForm' => $outingForm->createView(),
             'zipCode' => $zipCode,
-            'cityName' => $cityName
+            'cityName' => $cityName,
+            'errorZipCode' => $errorZipCode,
+            'errorCity' => $errorCity,
         ]);
     }
 
@@ -135,37 +144,51 @@ class OutingController extends AbstractController
             //return new RedirectResponse('http://localhost/CloneProjetSorties/public/');
             return $this->redirectToRoute('app_main_home');
         } else {
+            $errorCity = false;
+            $errorZipCode = false;
             $oldcity = $outing->getCity();
-            $oldcity->getName();
             $outing->setCity($oldcity);
             $outingForm = $this->createForm(OutingsFormType::class, $outing);
             $outingForm->handleRequest($request);
-            if ($outingForm->isSubmitted() && $outingForm->isValid()) {
-                $city = new City();
-                $city->setName($request->get('ville'))
-                    ->setCodePostal($request->get('codePostal'));
-                $em = $this->getDoctrine()
-                    ->getManager();
-                $query = $this->getDoctrine()
-                    ->getRepository(City::class)
-                    ->findOneBy(
-                        ['codePostal' => $city->getCodePostal()]
-                    );
 
-                if (!$query) {
-                    $em->persist($city);
-                    $outing->setCity($city);
-                } else
-                    $outing->setCity($query);
-                $em->flush();
+            if ($outingForm->isSubmitted()) {
+                $cityName = $request->get('ville');
+                $zipCode = $request->get('codePostal');
+                if(strlen($cityName) <= 1) {
+                    $errorCity = true;
+                }
+                if(strlen($zipCode) != 5) {
+                    $errorZipCode = true;
+                }
+                if($outingForm->isValid() && !$errorZipCode && !$errorCity) {
+                    $city = new City();
+                    $city->setName($request->get('ville'))
+                        ->setCodePostal($request->get('codePostal'));
+                    $em = $this->getDoctrine()
+                        ->getManager();
+                    $query = $this->getDoctrine()
+                        ->getRepository(City::class)
+                        ->findOneBy(
+                            ['codePostal' => $city->getCodePostal()]
+                        );
+                    if (!$query) {
+                        $em->persist($city);
+                        $outing->setCity($city);
+                    } else
+                        $outing->setCity($query);
+                    $em->persist($outing);
+                    $em->flush();
+                    $this->addFlash('success', ('Modification bien enregistrée.'));
+                    return $this->redirectToRoute('app_outing_view', ['id' => $outing->getId()]);
+                }
             }
         }
         return $this->render('outings/edit.html.twig', [
             'outingForm' => $outingForm->createView(),
             'cityName' => $oldcity->getName(),
             'zipCode' => $oldcity->getCodePostal(),
-            'status' => $outing->getStatus(),
-            'outing' => $outing
+            'errorZipCode' => $errorZipCode,
+            'errorCity' => $errorCity,
         ]);
     }
 

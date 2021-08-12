@@ -41,6 +41,7 @@ class Outings
      * @Assert\Expression(
      *     "this.getDateInscriptionLimit() < this.getDateHourOuting()"
      * )
+     * @Assert\GreaterThan("today")
      */
     private $dateInscriptionLimit;
 
@@ -58,8 +59,12 @@ class Outings
     private $duration;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="text", nullable=false)
+     * @Assert\NotBlank(message="Votre sortie doit contenir une description.")
+     * @Assert\Length(
+     *     min="10",minMessage="La description de votre sortie est trop courte. (10 caractères min.)",
+     *     max="2000", maxMessage="La description de votre sortie est trop longue. (5000 caractères max.)"
+     * )
      */
     private $description;
 

@@ -269,29 +269,29 @@ class User implements UserInterface
        $metadata->addPropertyConstraint('pseudo', new Assert\Length([
             'min' => 3,
             'max' => 20,
-            'minMessage' => 'Yolo',
-            'maxMessage' => 'It works',
+            'minMessage' => 'Votre pseudo est trop court.',
+            'maxMessage' => 'Votre pseudo est trop long.',
         ]));
 
         $metadata->addPropertyConstraint('email', new Assert\Email([
-            'message' => 'The email "{{ value }}" is not a valid email.',
+            'message' => 'L\'e-mail "{{ value }}" n\'est pas valide.',
         ]));
 
         $metadata->addPropertyConstraint('firstName', new Assert\Regex([
             'pattern' => '/\d/i',
             'match' => false,
-            'message' => 'Your name cannot contain a number.',
+            'message' => 'Votre prénom ne peut contenir de nombre.',
         ]));
 
         $metadata->addPropertyConstraint('lastName', new Assert\Regex([
             'pattern' => '/\d/i',
             'match' => false,
-            'message' => 'Your name cannot contain a number.',
+            'message' => 'Votre nom ne peut contenir de nombre.',
         ]));
 
         $metadata->addPropertyConstraint('phoneNumber', new Assert\Length([
             'max' => 10,
-            'maxMessage' => 'Your Phone Number must contain 10 Caracters',
+            'maxMessage' => 'Votre numéro de téléphone doit être composé de 10 chiffres.',
         ]));
 
         $metadata->addConstraint(new UniqueEntity([
