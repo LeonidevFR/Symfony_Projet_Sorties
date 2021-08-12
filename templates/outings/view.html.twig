@@ -48,5 +48,11 @@
     <div class="col-4"></div>
     <div class="col-4"></div>
 </div>
-
+<div>
+    {% if userMember != true %}
+        <a href="{{ path('app_outing_subscribe',{ 'id': view.id }) }}"><button>S'inscrire</button></a>
+    {% else %}
+        <a href="{{ path('app_outing_unsubscribe',{ 'id': view.id }) }}"><button>Se désinscrire</button></a>
+    {% endif %}
+</div>
 {% endblock %}

@@ -58,7 +58,7 @@ class MainController extends AbstractController
             dd($datas);*/
             $results = $repositoryOutings->findByParameters($user,$campus,$contains,$dateDebut,$dateFin, $isAuthor, $isRegistered, $isUnregistered, $isFinished);
         } else {
-            $results = $this->getDoctrine()->getRepository(Outings::class)->findAll();
+            $results = $this->getDoctrine()->getRepository(Outings::class)->findBy([],['id' => 'DESC']);
         }
         $display = $paginator->paginate(
             $results,
