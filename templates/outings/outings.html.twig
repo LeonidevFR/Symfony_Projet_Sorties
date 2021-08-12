@@ -27,16 +27,23 @@
                 </div>
             <div class="d-flex flex-column">
                 <div class="form-group">
-                    <div class="p-2"><strong><label for="ville-input">Ville : </label></strong>
-                    <input list="ville-select" id="ville-input" type="text" name="ville" placeholder="Chercher une ville">
-                    <datalist id="ville-select">
-                    </datalist></div>
+                    <div class="p-2">
+                        <strong><label for="ville-input">Ville : </label></strong>
+                        <input list="ville-select" id="ville-input" type="text" name="ville" {% if cityName != "" %} value="{{ cityName }}" {% endif %} placeholder="Chercher une ville">
+                        <datalist id="ville-select">
+                        </datalist>
+                    </div>
                 </div>
 
                 <div>
-                    <div class="p-2"><strong><label for="codePostal-select">Code Postal : </label></strong>
-                    <select style="width:200px;" id="codePostal-select" name="codePostal" disabled="true">
-                    </select></div>
+                    <div class="p-2">
+                        <strong><label for="codePostal-select">Code Postal : </label></strong>
+                        <select style="width:200px;" id="codePostal-select" name="codePostal" {% if zipCode == "" %}disabled="true"{% endif %}>
+                        {% if zipCode != "" %}
+                            <option>{{ zipCode }}</option>
+                        {% endif %}
+                        </select>
+                    </div>
                 </div>
             </div>
 

@@ -67,38 +67,39 @@ class OutingController extends AbstractController
     {
         $outing = new Outings();
         $outingForm = $this->createForm(OutingsFormType::class, $outing);
-
+        $cityName = "";
+        $zipCode = "";
         $outingForm->handleRequest($request);
-
-        if ($outingForm->isSubmitted() && $outingForm->isValid()) {
-            $city = new City();
+        if($outingForm->isSubmitted()) {
             $cityName = $request->get('ville');
-            $codePostal = $request->get('codePostal');
-            $city->setName($cityName)
-                ->setCodePostal($codePostal);
-            $em = $this->getDoctrine()
-                ->getManager();
-            $query = $this->getDoctrine()
-                ->getRepository(City::class)
-                ->findOneBy(
-                    ['codePostal' => $city->getCodePostal()]
-                );
-            if (!$query) {
-                $em->persist($city);
-                $outing->setCity($city);
-            } else
-                $outing->setCity($query);
-
+            $zipCode = $request->get('codePostal');
             if ($outingForm->isValid()) {
+                $city = new City();
+                $city->setName($cityName)
+                    ->setCodePostal($zipCode);
+                $em = $this->getDoctrine()
+                    ->getManager();
+                $query = $this->getDoctrine()
+                    ->getRepository(City::class)
+                    ->findOneBy(
+                        ['codePostal' => $city->getCodePostal()]
+                    );
+                if (!$query) {
+                    $em->persist($city);
+                    $outing->setCity($city);
+                } else
+                    $outing->setCity($query);
+
                 $outing->setAuthor($this->getUser());
                 $em->persist($outing);
                 $em->flush();
                 return new Response('Sortie bien enregistré.');
             }
         }
-
         return $this->render('outings/outings.html.twig', [
             'outingForm' => $outingForm->createView(),
+            'zipCode' => $zipCode,
+            'cityName' => $cityName
         ]);
     }
 
@@ -147,7 +148,6 @@ class OutingController extends AbstractController
                 $em->flush();
             }
         }
-
         return $this->render('outings/edit.html.twig', [
             'outingForm' => $outingForm->createView(),
             'cityName' => $oldcity->getName(),
@@ -220,13 +220,12 @@ class OutingController extends AbstractController
         if($this->getUser() != $outing->getAuthor() && !$admin) {
             $request->getSession()->getFlashBag()->add('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
             //return new RedirectResponse('http://localhost/CloneProjetSorties/public/');
-            return $this->redirectToRoute('app_main_home');
-        } elseif ($this->getUser() == $outing->getAuthor()) {
+        } else {
             $em = $this->getDoctrine()->getManager();
             $em->remove($outing);
             $em->flush();
-            return $this->redirectToRoute('app_main_home');
         }
+        return $this->redirectToRoute('app_main_home');
     }
 
 }
