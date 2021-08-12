@@ -116,7 +116,7 @@ class OutingController extends AbstractController
                 $admin = true;
         }
         dump($admin);
-        if(!$admin && $user != $outing->getAuthor()) {
+        if((!$admin && $user != $outing->getAuthor()) || (!$admin && $outing->getStatus() == "Passé")) {
             //$request->getSession()->getFlashBag()->add('access_denied', 'Vous n\'avez pas les permissions pour accèder à cette page.');
             $this->addFlash('access_denied', "Vous n'avez pas les permissions pour accèder à cette page.");
             //return new RedirectResponse('http://localhost/CloneProjetSorties/public/');
