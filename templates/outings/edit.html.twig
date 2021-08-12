@@ -21,9 +21,11 @@
                     <div class="date p-2"><strong>{{form_row(outingForm.dateInscriptionLimit)}}</strong></div>
                     <div class="p-2"><strong>{{ form_row(outingForm.spotNumber) }}</strong></div>
                     <div class="p-2"><strong>{{ form_row(outingForm.duration, {'attr': {'placeholder': 'en minutes.'}}) }}</strong></div>
-                    <div class="p-2"><strong>{{ form_row(outingForm.description) }}</strong></div>
+                    <div class="p-2"><strong>{{ form_label(outingForm.description) }}</strong></div>
+                    <div class="p-2" style="vertical-align:top;"><strong>{{ form_widget(outingForm.description) }}</strong></div>
                     <div class="p-2"><strong>{{ form_row(outingForm.Campus) }}</strong></div>
                 </div>
+
             <div class="d-flex flex-column">
                 <div class="form-group">
                     <div class="p-2">
